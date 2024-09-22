@@ -7,11 +7,11 @@ export default function ReactionGrid() {
 
   const gridSize = 20;
 
-  const getRandomCoordinate = (max) => {
-    return Math.floor(Math.random() * max);
-  };
-
   const grid = useMemo(() => {
+    const getRandomCoordinate = (max) => {
+      return Math.floor(Math.random() * max);
+    };
+
     const changeCoords = () => {
       const newX = getRandomCoordinate(gridSize);
       const newY = getRandomCoordinate(gridSize);
@@ -19,13 +19,8 @@ export default function ReactionGrid() {
       setCoords({ x: newX, y: newY });
     };
 
-    const handleCorrect = () => {
-      setScore((score) => score + 1);
-      changeCoords();
-    };
-
-    const handleIncorrect = () => {
-      setScore((score) => score - 1);
+    const handleClick = (isCorrect) => {
+      setScore((score) => score + (isCorrect ? 1 : -1));
       changeCoords();
     };
 
@@ -33,26 +28,24 @@ export default function ReactionGrid() {
     for (let i = 0; i < gridSize; i++) {
       let row = [];
       for (let j = 0; j < gridSize; j++) {
+        const isHighlighted = i === coords.x && j === coords.y;
         row.push(
           <Square
             key={`${i}-${j}`}
-            x={i}
-            y={j}
-            coords={coords}
-            handleCorrect={handleCorrect}
-            handleIncorrect={handleIncorrect}
+            isHighlighted={isHighlighted}
+            handleClick={() => handleClick(isHighlighted)}
           />
         );
       }
       tempGrid.push(<div key={i}>{row}</div>);
     }
     return tempGrid;
-  }, [coords]);
+  }, [coords.x, coords.y]);
 
   return (
     <div>
-      <div>{score}</div>
-      <div className="flex">{grid}</div>
+      <div className='text-3xl'>{score}</div>
+      <div className="flex">{grid}</div>;
     </div>
   );
 }
