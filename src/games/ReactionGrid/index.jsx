@@ -1,26 +1,58 @@
+import { useState, useMemo } from 'react';
 import { Square } from './Square';
 
 export default function ReactionGrid() {
-  const gridSize = 20;
+  const [score, setScore] = useState(0);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
 
-  const arr = Array.from({ length: gridSize });
+  const gridSize = 20;
 
   const getRandomCoordinate = (max) => {
     return Math.floor(Math.random() * max);
   };
 
-  const x = getRandomCoordinate(gridSize);
-  const y = getRandomCoordinate(gridSize);
+  const grid = useMemo(() => {
+    const changeCoords = () => {
+      const newX = getRandomCoordinate(gridSize);
+      const newY = getRandomCoordinate(gridSize);
 
-  console.log(x);
+      setCoords({ x: newX, y: newY });
+    };
 
-  const row = arr.map((item, index) => {
-    return <Square key={index} />;
-  });
+    const handleCorrect = () => {
+      setScore((score) => score + 1);
+      changeCoords();
+    };
 
-  const grid = arr.map((item, index) => {
-    return <div key={index}>{row}</div>;
-  });
+    const handleIncorrect = () => {
+      setScore((score) => score - 1);
+      changeCoords();
+    };
 
-  return <div className="flex">{grid}</div>;
+    let tempGrid = [];
+    for (let i = 0; i < gridSize; i++) {
+      let row = [];
+      for (let j = 0; j < gridSize; j++) {
+        row.push(
+          <Square
+            key={`${i}-${j}`}
+            x={i}
+            y={j}
+            coords={coords}
+            handleCorrect={handleCorrect}
+            handleIncorrect={handleIncorrect}
+          />
+        );
+      }
+      tempGrid.push(<div key={i}>{row}</div>);
+    }
+    return tempGrid;
+  }, [coords]);
+
+  return (
+    <div>
+      <div>{score}</div>
+      <div className="flex">{grid}</div>
+    </div>
+  );
 }
