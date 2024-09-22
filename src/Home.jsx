@@ -6,7 +6,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-wrap justify-center items-center h-screen bg-gray-100">
+    <div className="grid grid-cols-3 gap-4">
       {gamesList.map((game) => (
         <Card key={game.name} onClick={() => navigate(game.path)}>
           <h1 className="text-xl font-bold">{game.name}</h1>
