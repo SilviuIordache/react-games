@@ -31,7 +31,7 @@ const Home = () => {
     <>
       <div className="mb-4">
         <h1 className="text-3xl font-bold ">
-          Games: {gamesList.length} / 30
+          Games: {gamesList.length} / 12
         </h1>
         <p>
           Deadline: {timeLeft.days}D, {String(timeLeft.hours).padStart(2, '0')}:
