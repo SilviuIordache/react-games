@@ -65,10 +65,12 @@ export default function ReactionGrid() {
         setReactionArr((prevArr) => [...prevArr, reactionDuration]);
         changeCoords();
       } else {
-        const penaltyReaction =
-          averageReactionTime + (averageReactionTime * 20) / 100;
+        if (reactionArr.length > 0) {
+          const penaltyReaction =
+            averageReactionTime + (averageReactionTime * 20) / 100;
 
-        setReactionArr((prevArr) => [...prevArr, penaltyReaction]);
+          setReactionArr((prevArr) => [...prevArr, penaltyReaction]);
+        }
       }
     }
   };
