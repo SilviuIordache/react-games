@@ -6,6 +6,7 @@ import { gameStateReducer, GameState } from './gameStateReducer';
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
   const gridSize = 20;
+  const clicksCount = 15;
 
   const timerRef = useRef<number | null>(null);
 
@@ -16,10 +17,10 @@ export default function ReactionGrid() {
     GameState.START
   );
 
-  const averageReactionTime = reactionArr.reduce((sum, value) => sum + value, 0) / reactionArr.length;
+  const averageReactionTime =
+    reactionArr.reduce((sum, value) => sum + value, 0) / reactionArr.length;
 
-  const [clicksToMeasure, setClicksToMeasure] = useState(15);
-  const [score, setScore] = useState(0);
+  const [clicksToMeasure, setClicksToMeasure] = useState(clicksCount);
   const [coords, setCoords] = useState({ x: -1, y: -1 });
 
   const getRandomCoordinate = (max) => {
@@ -39,7 +40,6 @@ export default function ReactionGrid() {
     if (gameState === GameState.PLAYING) {
       if (isHighlightedSquare) {
         setClicksToMeasure((clicksToMeasure) => clicksToMeasure - 1);
-        setScore((score) => score + 1);
 
         const reactionTime = Date.now();
 
@@ -48,11 +48,13 @@ export default function ReactionGrid() {
           : reactionTime;
 
         setReactionArr((prevArr) => [...prevArr, reactionDuration]);
+        changeCoords();
       } else {
-        setScore((score) => score - 1);
-      }
+        const penaltyReaction =
+          averageReactionTime + (averageReactionTime * 20) / 100;
 
-      changeCoords();
+        setReactionArr((prevArr) => [...prevArr, penaltyReaction]);
+      }
     }
   };
 
@@ -82,6 +84,8 @@ export default function ReactionGrid() {
 
   const handleResetGame = () => {
     setGameState('setStart');
+    setClicksToMeasure(clicksCount);
+    setReactionArr([]);
   };
 
   return (
