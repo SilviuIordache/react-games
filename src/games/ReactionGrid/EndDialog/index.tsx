@@ -24,7 +24,7 @@ export const EndDialog = ({
 
   return (
     <Dialog isOpen={isOpen} title="Results" hideCloseButton>
-      <p>Avg: {convertMsToSeconds(averageReactionTime)}s</p>
+      <p>Average: {convertMsToSeconds(averageReactionTime)}s</p>
 
       <p>Fastest: {convertMsToSeconds(fastestReaction)}s</p>
       <p>Slowest: {convertMsToSeconds(slowestReaction)}s</p>
