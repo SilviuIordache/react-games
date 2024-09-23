@@ -5,11 +5,12 @@ import { gameStateReducer, GameState } from './gameStateReducer';
 import { StartDialog } from './StartDialog';
 import { EndDialog } from './EndDialog';
 import { convertMsToSeconds } from './helpers';
+import { ReactionsChart } from './EndDialog/ReactionsChart';
 
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
   const gridSize = 20;
-  const clicksCount = 3;
+  const clicksCount = 10;
 
   const timerRef = useRef<number | null>(null);
 
@@ -120,8 +121,9 @@ export default function ReactionGrid() {
           Restart
         </button>
       </div>
+
       <div className="flex justify-between mb-1">
-        <div>Avg: {convertMsToSeconds(averageReactionTime)}</div>
+        <div>Avg: {convertMsToSeconds(averageReactionTime) || '-'}</div>
         <div>Clicks left: {clicksToMeasure}</div>
       </div>
 

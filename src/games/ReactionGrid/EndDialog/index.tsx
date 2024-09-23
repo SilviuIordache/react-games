@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import Dialog from '../../components/Dialog';
-import { convertMsToSeconds } from './helpers';
+import Dialog from '../../../components/Dialog';
+import { convertMsToSeconds } from '../helpers';
+import { ReactionsChart } from './ReactionsChart';
 
 interface Props {
   onRestartGame: () => void;
@@ -23,16 +24,15 @@ export const EndDialog = ({
 
   return (
     <Dialog isOpen={isOpen} title="Results" hideCloseButton>
-      <p className="mb-4">
-        Your average reaction time: {convertMsToSeconds(averageReactionTime)}s
-      </p>
+      <p>Avg: {convertMsToSeconds(averageReactionTime)}s</p>
 
-      <p className="mb-4">
-        Fastest reaction: {convertMsToSeconds(fastestReaction)}s
-      </p>
-      <p className="mb-4">
-        Slowest reaction: {convertMsToSeconds(slowestReaction)}s
-      </p>
+      <p>Fastest: {convertMsToSeconds(fastestReaction)}s</p>
+      <p>Slowest: {convertMsToSeconds(slowestReaction)}s</p>
+
+      <p className="mb-4 mt-8">Performance over time</p>
+      <div className="w-full h-40">
+        <ReactionsChart reactionArr={reactionArr} />
+      </div>
 
       <div className="flex justify-end">
         <button

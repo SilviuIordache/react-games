@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Dialog from '../../components/Dialog';
+import { ReactionsChart } from './EndDialog/ReactionsChart';
 
 interface Props {
   onStartGame: () => void;
