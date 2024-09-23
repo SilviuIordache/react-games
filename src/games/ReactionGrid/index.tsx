@@ -1,12 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { useState, useMemo, useReducer, useCallback } from 'react';
-import { Square } from './Square';
-import { gameStateReducer, GameState } from './gameStateReducer';
-import { StartDialog } from './StartDialog';
-import { EndDialog } from './EndDialog';
-import { convertMsToSeconds } from './helpers';
-import { ReactionsChart } from './EndDialog/ReactionsChart';
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import useDeviceSize from '../../custom-hooks/useDeviceSize';
+import { EndDialog } from './EndDialog';
+import { GameState, gameStateReducer } from './gameStateReducer';
+import { convertMsToSeconds } from './helpers';
+import { Square } from './Square';
+import { StartDialog } from './StartDialog';
 
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
