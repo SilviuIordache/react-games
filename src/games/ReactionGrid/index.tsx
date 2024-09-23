@@ -6,11 +6,28 @@ import { StartDialog } from './StartDialog';
 import { EndDialog } from './EndDialog';
 import { convertMsToSeconds } from './helpers';
 import { ReactionsChart } from './EndDialog/ReactionsChart';
+import useDeviceSize from '../../custom-hooks/useDeviceSize';
 
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
-  const gridSize = 20;
+  const initialGridSize = 20;
   const clicksCount = 20;
+
+  const [gridSize, setGridSize] = useState(initialGridSize);
+
+  const isSmallDevice = useDeviceSize();
+
+  useEffect(() => {
+    if (isSmallDevice) {
+      setGridSize(10);
+    } else {
+      setGridSize(20);
+    }
+  }, [isSmallDevice]);
+
+  useEffect(() => {
+    console.log(isSmallDevice);
+  }, [isSmallDevice]);
 
   const timerRef = useRef<number | null>(null);
 
