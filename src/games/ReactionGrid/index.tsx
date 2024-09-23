@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { useState, useMemo, useReducer, useCallback } from 'react';
 import { Square } from './Square';
 import { gameStateReducer, GameState } from './gameStateReducer';
+import Dialog from '../../components/Dialog';
+import { StartDialog } from './StartDialog';
 
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
@@ -12,16 +14,25 @@ export default function ReactionGrid() {
 
   const [reactionArr, setReactionArr] = useState<number[]>([]);
 
+  const [clicksToMeasure, setClicksToMeasure] = useState(clicksCount);
+  const [coords, setCoords] = useState({ x: -1, y: -1 });
+
   const [gameState, setGameState] = useReducer(
     gameStateReducer,
     GameState.START
   );
 
-  const averageReactionTime =
-    reactionArr.reduce((sum, value) => sum + value, 0) / reactionArr.length;
+  const averageReactionTime = useMemo(() => {
+    const sum = reactionArr.reduce((sum, value) => sum + value, 0);
 
-  const [clicksToMeasure, setClicksToMeasure] = useState(clicksCount);
-  const [coords, setCoords] = useState({ x: -1, y: -1 });
+    const avg = sum / reactionArr.length;
+
+    const valueInSeconds = avg / 1000;
+
+    const toFixedValue = parseFloat(valueInSeconds.toFixed(2));
+
+    return toFixedValue;
+  }, [reactionArr]);
 
   const getRandomCoordinate = (max) => {
     return Math.floor(Math.random() * max);
@@ -36,7 +47,7 @@ export default function ReactionGrid() {
     timerRef.current = Date.now();
   }, [gridSize]);
 
-  const calculateScore = (isHighlightedSquare) => {
+  const updateReactionTimes = (isHighlightedSquare) => {
     if (gameState === GameState.PLAYING) {
       if (isHighlightedSquare) {
         setClicksToMeasure((clicksToMeasure) => clicksToMeasure - 1);
@@ -68,7 +79,7 @@ export default function ReactionGrid() {
           <Square
             key={`${i}-${j}`}
             isHighlighted={isHighlightedSquare}
-            handleClick={() => calculateScore(isHighlightedSquare)}
+            handleClick={() => updateReactionTimes(isHighlightedSquare)}
           />
         );
       }
@@ -90,25 +101,29 @@ export default function ReactionGrid() {
 
   return (
     <div>
+      <StartDialog
+        onStartGame={handleStartGame}
+        isOpen={gameState === GameState.START}
+      />
+
       <div>Game state: {gameState}</div>
-      {gameState === 'PLAYING' ? (
+
+      {gameState === GameState.PLAYING && (
         <button
           className="bg-blue-800 text-white p-2 rounded-md"
           onClick={handleResetGame}
         >
           Reset
         </button>
-      ) : (
-        <button
-          className="bg-blue-800 text-white p-2 rounded-md"
-          onClick={handleStartGame}
-        >
-          Start Game
-        </button>
       )}
 
+      <div>
+        {reactionArr.map((reaction) => (
+          <span key={reaction}>{reaction}, </span>
+        ))}
+      </div>
       <div className="flex justify-between mb-4">
-        <div>Avg reaction time : {averageReactionTime}</div>
+        <div>Avg reaction time : {averageReactionTime || '-'}</div>
         <div>Clicks left: {clicksToMeasure}</div>
       </div>
       <div className="flex">{grid}</div>
