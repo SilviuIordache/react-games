@@ -1,14 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState, useMemo, useReducer, useCallback } from 'react';
 import { Square } from './Square';
 import { gameStateReducer, GameState } from './gameStateReducer';
-import Dialog from '../../components/Dialog';
 import { StartDialog } from './StartDialog';
+import { EndDialog } from './EndDialog';
+import { convertMsToSeconds } from './helpers';
 
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
   const gridSize = 20;
-  const clicksCount = 15;
+  const clicksCount = 3;
 
   const timerRef = useRef<number | null>(null);
 
@@ -22,6 +23,14 @@ export default function ReactionGrid() {
     GameState.START
   );
 
+  useEffect(() => {
+    console.log(reactionArr.length, clicksCount);
+    if (reactionArr.length === clicksCount) {
+      console.log('setting end');
+      setGameState('setEnd');
+    }
+  }, [reactionArr]);
+
   const averageReactionTime = useMemo(() => {
     const sum = reactionArr.reduce((sum, value) => sum + value, 0);
 
@@ -29,14 +38,6 @@ export default function ReactionGrid() {
 
     return avg;
   }, [reactionArr]);
-
-  const convertMsToSeconds = (value) => {
-    const valueInSeconds = value / 1000;
-
-    const toFixedValue = parseFloat(valueInSeconds.toFixed(3));
-
-    return toFixedValue;
-  };
 
   const getRandomCoordinate = (max) => {
     return Math.floor(Math.random() * max);
@@ -93,14 +94,10 @@ export default function ReactionGrid() {
   }, [changeCoords, coords.x, coords.y]);
 
   const handleStartGame = () => {
-    setGameState('setPlaying');
-    changeCoords();
-  };
-
-  const handleResetGame = () => {
-    setGameState('setStart');
     setClicksToMeasure(clicksCount);
     setReactionArr([]);
+    setGameState('setPlaying');
+    changeCoords();
   };
 
   return (
@@ -110,12 +107,18 @@ export default function ReactionGrid() {
         isOpen={gameState === GameState.START}
       />
 
+      <EndDialog
+        isOpen={gameState === GameState.END}
+        onRestartGame={handleStartGame}
+        averageReactionTime={averageReactionTime}
+      />
+
       <div>Game state: {gameState}</div>
 
       {gameState === GameState.PLAYING && (
         <button
           className="bg-blue-800 text-white p-2 rounded-md"
-          onClick={handleResetGame}
+          onClick={handleStartGame}
         >
           Reset
         </button>

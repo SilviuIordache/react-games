@@ -5,12 +5,9 @@ interface Props {
   onStartGame: () => void;
   isOpen: boolean;
 }
-export const StartDialog = ({ onStartGame }: Props) => {
-  const [isOpen, setIsOpen] = useState(true);
-
+export const StartDialog = ({ isOpen, onStartGame }: Props) => {
   const handleStartGame = () => {
     onStartGame();
-    setIsOpen(false);
   };
 
   return (
