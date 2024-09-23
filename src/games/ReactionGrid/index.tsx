@@ -10,7 +10,7 @@ import { ReactionsChart } from './EndDialog/ReactionsChart';
 export default function ReactionGrid() {
   // TODO: 30x30 for large screens, 10x10 for mobile
   const gridSize = 20;
-  const clicksCount = 10;
+  const clicksCount = 20;
 
   const timerRef = useRef<number | null>(null);
 

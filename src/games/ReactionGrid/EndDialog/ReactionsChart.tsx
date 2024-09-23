@@ -6,7 +6,7 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from 'recharts';
 import { convertMsToSeconds } from '../helpers';
 
@@ -35,13 +35,15 @@ export const ReactionsChart = ({ reactionArr }: Props) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip />
+        <Tooltip contentStyle={{ backgroundColor: '#333', color: '#fff' }} />
 
         <Line
           type="monotone"
           dataKey="time"
-          stroke="#8884d8"
+          stroke="#90EE90" // Change line color to green
+          strokeWidth={3} // Make the line thicker
           activeDot={{ r: 4 }}
+          dot={false} // Hide the dots on the line
         />
       </LineChart>
     </ResponsiveContainer>
