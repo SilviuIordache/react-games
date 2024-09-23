@@ -24,9 +24,7 @@ export default function ReactionGrid() {
   );
 
   useEffect(() => {
-    console.log(reactionArr.length, clicksCount);
     if (reactionArr.length === clicksCount) {
-      console.log('setting end');
       setGameState('setEnd');
     }
   }, [reactionArr]);
@@ -108,31 +106,25 @@ export default function ReactionGrid() {
       />
 
       <EndDialog
+        reactionArr={reactionArr}
         isOpen={gameState === GameState.END}
         onRestartGame={handleStartGame}
         averageReactionTime={averageReactionTime}
       />
 
-      <div>Game state: {gameState}</div>
-
-      {gameState === GameState.PLAYING && (
+      <div className="flex justify-end mb-1">
         <button
-          className="bg-blue-800 text-white p-2 rounded-md"
+          className="border border-gray-500 text-white p-1 text-sm rounded-md hover:bg-gray-600"
           onClick={handleStartGame}
         >
-          Reset
+          Restart
         </button>
-      )}
-
-      <div>
-        {reactionArr.map((reaction) => (
-          <span key={reaction}>{reaction}, </span>
-        ))}
       </div>
-      <div className="flex justify-between mb-4">
-        <div>Avg reaction time : {convertMsToSeconds(averageReactionTime)}</div>
+      <div className="flex justify-between mb-1">
+        <div>Avg: {convertMsToSeconds(averageReactionTime)}</div>
         <div>Clicks left: {clicksToMeasure}</div>
       </div>
+
       <div className="flex">{grid}</div>
     </div>
   );
