@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 interface Props {
@@ -10,9 +10,19 @@ export const Square = ({ isHighlighted, onClick }: Props) => {
   const [showRed, setShowRed] = useState(false);
 
   const handleClick = () => {
-    if (isHighlighted) handleClick();
+    if (isHighlighted) {
+      onClick();
+    }
     setShowRed(true);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowRed(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [showRed]);
 
   return (
     <div
