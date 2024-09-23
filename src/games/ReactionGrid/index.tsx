@@ -85,7 +85,7 @@ export default function ReactionGrid() {
           <Square
             key={`${i}-${j}`}
             isHighlighted={isHighlightedSquare}
-            handleClick={() => updateReactionTimes(isHighlightedSquare)}
+            onClick={() => updateReactionTimes(isHighlightedSquare)}
           />
         );
       }
