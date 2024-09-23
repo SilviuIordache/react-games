@@ -27,12 +27,16 @@ export default function ReactionGrid() {
 
     const avg = sum / reactionArr.length;
 
-    const valueInSeconds = avg / 1000;
+    return avg;
+  }, [reactionArr]);
 
-    const toFixedValue = parseFloat(valueInSeconds.toFixed(2));
+  const convertMsToSeconds = (value) => {
+    const valueInSeconds = value / 1000;
+
+    const toFixedValue = parseFloat(valueInSeconds.toFixed(3));
 
     return toFixedValue;
-  }, [reactionArr]);
+  };
 
   const getRandomCoordinate = (max) => {
     return Math.floor(Math.random() * max);
@@ -123,7 +127,7 @@ export default function ReactionGrid() {
         ))}
       </div>
       <div className="flex justify-between mb-4">
-        <div>Avg reaction time : {averageReactionTime || '-'}</div>
+        <div>Avg reaction time : {convertMsToSeconds(averageReactionTime)}</div>
         <div>Clicks left: {clicksToMeasure}</div>
       </div>
       <div className="flex">{grid}</div>

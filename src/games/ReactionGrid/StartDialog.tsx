@@ -16,8 +16,8 @@ export const StartDialog = ({ onStartGame }: Props) => {
   return (
     <Dialog isOpen={isOpen} title="Reaction Grid" hideCloseButton>
       <p className="mb-4">
-        Click on the blue square as fast as you can. Clicking on other squares
-        will yield a penalty to your reaction average.
+        Click on the <span className="text-blue-500">blue square</span> as fast
+        as you can. Avoid misclicking.
       </p>
 
       <div className="flex justify-end">
