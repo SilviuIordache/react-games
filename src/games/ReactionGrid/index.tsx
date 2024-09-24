@@ -1,9 +1,8 @@
 import React, {
-  useCallback,
   useEffect,
   useMemo,
   useReducer,
-  useRef,
+  useRef
 } from 'react';
 import useDeviceSize from '../../custom-hooks/useDeviceSize';
 import { EndDialog } from './EndDialog';
