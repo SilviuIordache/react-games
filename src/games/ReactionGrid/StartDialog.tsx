@@ -15,7 +15,7 @@ export const StartDialog = ({ isOpen, onStartGame }: Props) => {
     <Dialog isOpen={isOpen} title="Reaction Grid" hideCloseButton>
       <p className="mb-4">
         Click on the <span className="text-blue-500">blue square</span> as fast
-        as you can. Misclick = penalty
+        as you can. Clicking on the wrong square will result in a penalty.
       </p>
 
       <div className="flex justify-end">

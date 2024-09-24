@@ -30,9 +30,7 @@ const Home = () => {
   return (
     <>
       <div className="mb-4">
-        <h1 className="text-3xl font-bold ">
-          Games: {gamesList.length} / 12
-        </h1>
+        <h1 className="text-3xl font-bold ">Games: {gamesList.length} / 12</h1>
         <p>
           Deadline: {timeLeft.days}D, {String(timeLeft.hours).padStart(2, '0')}:
           {String(timeLeft.minutes).padStart(2, '0')}:
@@ -44,6 +42,7 @@ const Home = () => {
         {gamesList.map((game) => (
           <Card key={game.name} onClick={() => navigate(game.path)}>
             <h1 className="text-xl font-bold">{game.name}</h1>
+            {game.status === 'wip' && <p className="text-gray-500">WIP</p>}
           </Card>
         ))}
       </div>
