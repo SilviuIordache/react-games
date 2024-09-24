@@ -16,7 +16,7 @@ export type ReducerAction =
   | { type: 'RESET_GAME' };
 
 export const initialState = {
-  clicksToMeasure: 5,
+  clicksToMeasure: 20,
   reactionArr: [],
   gameState: GameState.START,
   gridSize: 20,
