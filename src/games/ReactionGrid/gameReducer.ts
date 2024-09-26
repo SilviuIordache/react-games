@@ -10,8 +10,15 @@ export type ReducerAction =
   | { type: 'SET_GRID_SIZE'; payload: number }
   | { type: 'START_GAME' }
   | { type: 'CHANGE_COORDS' }
-  | { type: 'ADD_REACTION_TIME'; payload: number }
   | { type: 'DECREMENT_CLICKS' }
+  | {
+      type: 'UPDATE_REACTION_TIMES';
+      payload: {
+        isHighlightedSquare: boolean;
+        timer: number;
+        averageReactionTime: number;
+      };
+    }
   | { type: 'SET_END_GAME' }
   | { type: 'RESET_GAME' };
 
@@ -20,6 +27,7 @@ export const initialState = {
   reactionArr: [],
   gameState: GameState.START,
   gridSize: 20,
+  gridSizeBigScreen: 20,
   gridSizeMobile: 10,
   coords: { x: -1, y: -1 },
   timer: null,
@@ -36,6 +44,32 @@ export const gameReducer = (state, action) => {
         reactionArr: [],
         gameState: GameState.PLAYING,
       };
+    case 'UPDATE_REACTION_TIMES':
+      const { isHighlightedSquare, timer, averageReactionTime } =
+        action.payload;
+
+      if (state.gameState !== GameState.PLAYING) return state;
+
+      let newReactionArr = [...state.reactionArr];
+
+      if (isHighlightedSquare) {
+        const reactionTime = Date.now();
+        const reactionDuration = timer ? reactionTime - timer : reactionTime;
+        newReactionArr.push(reactionDuration);
+      } else if (state.reactionArr.length > 0) {
+        const penaltyReaction =
+          averageReactionTime + (averageReactionTime * 20) / 100;
+        newReactionArr.push(penaltyReaction);
+      }
+
+      return {
+        ...state,
+        reactionArr: newReactionArr,
+        clicksToMeasure: isHighlightedSquare
+          ? state.clicksToMeasure - 1
+          : state.clicksToMeasure,
+      };
+
     case 'CHANGE_COORDS':
       const getRandomCoordinate = (max) => Math.floor(Math.random() * max);
       const newCoords = {
@@ -44,11 +78,7 @@ export const gameReducer = (state, action) => {
       };
 
       return { ...state, coords: newCoords, timer: Date.now() };
-    case 'ADD_REACTION_TIME':
-      return {
-        ...state,
-        reactionArr: [...state.reactionArr, action.payload],
-      };
+
     case 'DECREMENT_CLICKS':
       return { ...state, clicksToMeasure: state.clicksToMeasure - 1 };
     case 'SET_END_GAME':

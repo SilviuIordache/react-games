@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from 'react';
+import React, { useEffect, useMemo, useReducer, useRef } from 'react';
 import useDeviceSize from '../../custom-hooks/useDeviceSize';
 import { EndDialog } from './EndDialog';
 import { GameState, gameReducer, initialState } from './gameReducer';
@@ -18,13 +12,19 @@ export default function ReactionGrid() {
 
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
+  // Change the grid based on the screen size
   useEffect(() => {
+    const newGridSize = isSmallDevice
+      ? state.gridSizeMobile
+      : state.gridSizeBigScreen;
+
     dispatch({
       type: 'SET_GRID_SIZE',
-      payload: isSmallDevice ? state.gridSizeMobile : state.gridSize,
+      payload: newGridSize,
     });
   }, [isSmallDevice]);
 
+  // End the game when the clicks to measure are 0
   useEffect(() => {
     if (state.clicksToMeasure === 0) {
       dispatch({ type: 'SET_END_GAME' });
@@ -45,36 +45,24 @@ export default function ReactionGrid() {
     timerRef.current = Date.now();
   };
 
-  const updateReactionTimes = useCallback(
-    (isHighlightedSquare) => {
-      if (state.gameState === GameState.PLAYING) {
-        if (isHighlightedSquare) {
-          dispatch({ type: 'DECREMENT_CLICKS' });
+  const handleSquareClick = (isHighlightedSquare: boolean) => {
+    dispatch({
+      type: 'UPDATE_REACTION_TIMES',
+      payload: {
+        isHighlightedSquare,
+        timer: timerRef.current,
+        averageReactionTime,
+      },
+    });
 
-          const reactionTime = Date.now();
-
-          const reactionDuration = timerRef.current
-            ? reactionTime - timerRef.current
-            : reactionTime;
-
-          dispatch({ type: 'ADD_REACTION_TIME', payload: reactionDuration });
-          changeCoords();
-        } else {
-          if (state.reactionArr.length > 0) {
-            const penaltyReaction =
-              averageReactionTime + (averageReactionTime * 20) / 100;
-
-            dispatch({ type: 'ADD_REACTION_TIME', payload: penaltyReaction });
-          }
-        }
-      }
-    },
-    [state.gameState, averageReactionTime]
-  );
+    if (isHighlightedSquare) {
+      dispatch({ type: 'CHANGE_COORDS' });
+    }
+  };
 
   const handleStartGame = () => {
     dispatch({ type: 'START_GAME' });
-    changeCoords();
+    dispatch({ type: 'CHANGE_COORDS' });
   };
 
   return (
@@ -110,7 +98,7 @@ export default function ReactionGrid() {
         <Grid
           coords={state.coords}
           gridSize={state.gridSize}
-          updateReactionTimes={updateReactionTimes}
+          onSquareClick={handleSquareClick}
         />
       </div>
     </div>
