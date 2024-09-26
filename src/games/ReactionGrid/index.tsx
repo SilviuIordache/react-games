@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useRef } from 'react';
+import React, { useEffect, useMemo, useReducer } from 'react';
 import useDeviceSize from '../../custom-hooks/useDeviceSize';
 import { EndDialog } from './EndDialog';
 import { GameState, gameReducer, initialState } from './gameReducer';
@@ -8,7 +8,6 @@ import { Grid } from './Grid';
 
 export default function ReactionGrid() {
   const isSmallDevice = useDeviceSize();
-  const timerRef = useRef<number | null>(null);
 
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
@@ -54,9 +53,7 @@ export default function ReactionGrid() {
   };
 
   const handleStartGame = () => {
-    timerRef.current = Date.now();
-
-    dispatch({ type: 'START_GAME', payload: { startTime: timerRef.current } });
+    dispatch({ type: 'START_GAME' });
     dispatch({ type: 'CHANGE_COORDS' });
   };
 

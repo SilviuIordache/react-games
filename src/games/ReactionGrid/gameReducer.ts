@@ -8,7 +8,7 @@ export type GameStateType = keyof typeof GameState;
 
 export type ReducerAction =
   | { type: 'SET_GRID_SIZE'; payload: number }
-  | { type: 'START_GAME'; payload: { startTime: number } }
+  | { type: 'START_GAME' }
   | { type: 'CHANGE_COORDS' }
   | { type: 'DECREMENT_CLICKS' }
   | {
@@ -39,13 +39,15 @@ export const gameReducer = (state, action) => {
     case 'SET_GRID_SIZE':
       return { ...state, gridSize: action.payload };
     case 'START_GAME':
+      const timer = Date.now();
+
       return {
         ...state,
         clicksToMeasure: initialState.clicksToMeasure,
         reactionArr: [],
         gameState: GameState.PLAYING,
-        startTime: action.payload.startTime,
-        previousClickTime: action.payload.startTime,
+        startTime: timer,
+        previousClickTime: timer,
       };
     case 'UPDATE_REACTION_TIMES':
       const { isHighlightedSquare, averageReactionTime } = action.payload;
@@ -69,7 +71,8 @@ export const gameReducer = (state, action) => {
       }
 
       if (state.reactionArr.length > 0) {
-        const penaltyReaction = averageReactionTime + (averageReactionTime * 20) / 100;
+        const penaltyReaction =
+          averageReactionTime + (averageReactionTime * 20) / 100;
         newReactionArr.push(penaltyReaction);
       }
 
