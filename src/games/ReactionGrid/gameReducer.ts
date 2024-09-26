@@ -66,18 +66,17 @@ export const gameReducer = (state, action) => {
           clicksToMeasure: state.clicksToMeasure - 1,
           previousClickTime: reactionTime,
         };
-      } else if (state.reactionArr.length > 0) {
-        const penaltyReaction =
-          averageReactionTime + (averageReactionTime * 20) / 100;
+      }
+
+      if (state.reactionArr.length > 0) {
+        const penaltyReaction = averageReactionTime + (averageReactionTime * 20) / 100;
         newReactionArr.push(penaltyReaction);
       }
 
       return {
         ...state,
         reactionArr: newReactionArr,
-        clicksToMeasure: isHighlightedSquare
-          ? state.clicksToMeasure - 1
-          : state.clicksToMeasure,
+        clicksToMeasure: state.clicksToMeasure,
       };
 
     case 'CHANGE_COORDS':
