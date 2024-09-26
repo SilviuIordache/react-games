@@ -39,18 +39,11 @@ export default function ReactionGrid() {
     return avg;
   }, [state.reactionArr]);
 
-  const changeCoords = () => {
-    dispatch({ type: 'CHANGE_COORDS' });
-
-    timerRef.current = Date.now();
-  };
-
   const handleSquareClick = (isHighlightedSquare: boolean) => {
     dispatch({
       type: 'UPDATE_REACTION_TIMES',
       payload: {
         isHighlightedSquare,
-        timer: timerRef.current,
         averageReactionTime,
       },
     });
@@ -61,7 +54,9 @@ export default function ReactionGrid() {
   };
 
   const handleStartGame = () => {
-    dispatch({ type: 'START_GAME' });
+    timerRef.current = Date.now();
+
+    dispatch({ type: 'START_GAME', payload: { startTime: timerRef.current } });
     dispatch({ type: 'CHANGE_COORDS' });
   };
 

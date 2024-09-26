@@ -8,7 +8,7 @@ export type GameStateType = keyof typeof GameState;
 
 export type ReducerAction =
   | { type: 'SET_GRID_SIZE'; payload: number }
-  | { type: 'START_GAME' }
+  | { type: 'START_GAME'; payload: { startTime: number } }
   | { type: 'CHANGE_COORDS' }
   | { type: 'DECREMENT_CLICKS' }
   | {
@@ -30,7 +30,8 @@ export const initialState = {
   gridSizeBigScreen: 20,
   gridSizeMobile: 10,
   coords: { x: -1, y: -1 },
-  timer: null,
+  startTime: null,
+  previousClickTime: null,
 };
 
 export const gameReducer = (state, action) => {
@@ -43,10 +44,11 @@ export const gameReducer = (state, action) => {
         clicksToMeasure: initialState.clicksToMeasure,
         reactionArr: [],
         gameState: GameState.PLAYING,
+        startTime: action.payload.startTime,
+        previousClickTime: action.payload.startTime,
       };
     case 'UPDATE_REACTION_TIMES':
-      const { isHighlightedSquare, timer, averageReactionTime } =
-        action.payload;
+      const { isHighlightedSquare, averageReactionTime } = action.payload;
 
       if (state.gameState !== GameState.PLAYING) return state;
 
@@ -54,8 +56,16 @@ export const gameReducer = (state, action) => {
 
       if (isHighlightedSquare) {
         const reactionTime = Date.now();
-        const reactionDuration = timer ? reactionTime - timer : reactionTime;
+        const reactionDuration = reactionTime - state.previousClickTime;
+
         newReactionArr.push(reactionDuration);
+
+        return {
+          ...state,
+          reactionArr: newReactionArr,
+          clicksToMeasure: state.clicksToMeasure - 1,
+          previousClickTime: reactionTime,
+        };
       } else if (state.reactionArr.length > 0) {
         const penaltyReaction =
           averageReactionTime + (averageReactionTime * 20) / 100;
@@ -82,7 +92,7 @@ export const gameReducer = (state, action) => {
     case 'DECREMENT_CLICKS':
       return { ...state, clicksToMeasure: state.clicksToMeasure - 1 };
     case 'SET_END_GAME':
-      return { ...state, gameState: GameState.END };
+      return { ...state, gameState: GameState.END, startTime: null };
     case 'RESET_GAME':
       return initialState;
     default:
