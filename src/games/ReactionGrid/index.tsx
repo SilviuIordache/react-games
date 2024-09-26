@@ -1,15 +1,16 @@
 import React, {
+  useCallback,
   useEffect,
   useMemo,
   useReducer,
-  useRef
+  useRef,
 } from 'react';
 import useDeviceSize from '../../custom-hooks/useDeviceSize';
 import { EndDialog } from './EndDialog';
 import { GameState, gameReducer, initialState } from './gameReducer';
 import { convertMsToSeconds } from './helpers';
-import { Square } from './Square';
 import { StartDialog } from './StartDialog';
+import { Grid } from './Grid';
 
 export default function ReactionGrid() {
   const isSmallDevice = useDeviceSize();
@@ -44,49 +45,32 @@ export default function ReactionGrid() {
     timerRef.current = Date.now();
   };
 
-  const updateReactionTimes = (isHighlightedSquare) => {
-    if (state.gameState === GameState.PLAYING) {
-      if (isHighlightedSquare) {
-        dispatch({ type: 'DECREMENT_CLICKS' });
+  const updateReactionTimes = useCallback(
+    (isHighlightedSquare) => {
+      if (state.gameState === GameState.PLAYING) {
+        if (isHighlightedSquare) {
+          dispatch({ type: 'DECREMENT_CLICKS' });
 
-        const reactionTime = Date.now();
+          const reactionTime = Date.now();
 
-        const reactionDuration = timerRef.current
-          ? reactionTime - timerRef.current
-          : reactionTime;
+          const reactionDuration = timerRef.current
+            ? reactionTime - timerRef.current
+            : reactionTime;
 
-        dispatch({ type: 'ADD_REACTION_TIME', payload: reactionDuration });
-        changeCoords();
-      } else {
-        if (state.reactionArr.length > 0) {
-          const penaltyReaction =
-            averageReactionTime + (averageReactionTime * 20) / 100;
+          dispatch({ type: 'ADD_REACTION_TIME', payload: reactionDuration });
+          changeCoords();
+        } else {
+          if (state.reactionArr.length > 0) {
+            const penaltyReaction =
+              averageReactionTime + (averageReactionTime * 20) / 100;
 
-          dispatch({ type: 'ADD_REACTION_TIME', payload: penaltyReaction });
+            dispatch({ type: 'ADD_REACTION_TIME', payload: penaltyReaction });
+          }
         }
       }
-    }
-  };
-
-  const Grid = () => {
-    const tempGrid: JSX.Element[] = [];
-    for (let i = 0; i < state.gridSize; i++) {
-      const row: JSX.Element[] = [];
-      for (let j = 0; j < state.gridSize; j++) {
-        const isHighlightedSquare =
-          i === state.coords.x && j === state.coords.y;
-        row.push(
-          <Square
-            key={`${i}-${j}`}
-            isHighlighted={isHighlightedSquare}
-            onClick={() => updateReactionTimes(isHighlightedSquare)}
-          />
-        );
-      }
-      tempGrid.push(<div key={i}>{row}</div>);
-    }
-    return tempGrid;
-  };
+    },
+    [state.gameState, averageReactionTime]
+  );
 
   const handleStartGame = () => {
     dispatch({ type: 'START_GAME' });
@@ -118,11 +102,16 @@ export default function ReactionGrid() {
 
       <div className="flex justify-between mb-1">
         <div>Avg: {convertMsToSeconds(averageReactionTime) || '-'}</div>
+
         <div>Clicks left: {state.clicksToMeasure}</div>
       </div>
 
       <div className="flex">
-        <Grid />
+        <Grid
+          coords={state.coords}
+          gridSize={state.gridSize}
+          updateReactionTimes={updateReactionTimes}
+        />
       </div>
     </div>
   );

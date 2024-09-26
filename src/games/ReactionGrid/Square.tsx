@@ -17,20 +17,22 @@ export const Square = ({ isHighlighted, onClick }: Props) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowRed(false);
-    }, 300);
+    if (showRed) {
+      const timer = setTimeout(() => {
+        setShowRed(false);
+      }, 400);
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    }
   }, [showRed]);
 
   return (
     <div
       className={classNames(
-        'bg-gray border border-gray-500 border-b-1 w-6 h-6 hover:bg-gray-600',
+        'border border-gray-500 border-b-1 w-6 h-6 hover:bg-gray-600',
         {
           'bg-blue-600': isHighlighted,
-          'hover:bg-red-500 bg-red-500 ': showRed,
+          'hover:bg-red-500 bg-red-500': showRed,
         }
       )}
       onClick={handleClick}
