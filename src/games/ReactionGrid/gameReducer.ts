@@ -10,7 +10,6 @@ export type ReducerAction =
   | { type: 'SET_GRID_SIZE'; payload: number }
   | { type: 'START_GAME' }
   | { type: 'CHANGE_COORDS' }
-  | { type: 'DECREMENT_CLICKS' }
   | {
       type: 'UPDATE_REACTION_TIMES';
       payload: {
@@ -52,8 +51,6 @@ export const gameReducer = (state, action) => {
     case 'UPDATE_REACTION_TIMES':
       const { isHighlightedSquare, averageReactionTime } = action.payload;
 
-      if (state.gameState !== GameState.PLAYING) return state;
-
       let newReactionArr = [...state.reactionArr];
 
       if (isHighlightedSquare) {
@@ -91,8 +88,6 @@ export const gameReducer = (state, action) => {
 
       return { ...state, coords: newCoords, timer: Date.now() };
 
-    case 'DECREMENT_CLICKS':
-      return { ...state, clicksToMeasure: state.clicksToMeasure - 1 };
     case 'SET_END_GAME':
       return { ...state, gameState: GameState.END, startTime: null };
     case 'RESET_GAME':
