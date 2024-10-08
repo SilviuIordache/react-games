@@ -2,11 +2,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { gamesList } from './games/games';
 import Home from './Home';
-import { ReactionGrid } from './games';
+import { FlippySquares, ReactionGrid } from './games';
 
 function App() {
   return (
-    <ReactionGrid/>
+    // <ReactionGrid/>
+    <FlippySquares/>
     // <Router>
     //   <Routes>
     //     <Route key="/" path="/" element={<Home />} />

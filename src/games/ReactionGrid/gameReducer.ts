@@ -4,8 +4,6 @@ export enum GameState {
   END = 'END',
 }
 
-export type GameStateType = keyof typeof GameState;
-
 export type ReducerAction =
   | { type: 'SET_GRID_SIZE'; payload: number }
   | { type: 'START_GAME' }
