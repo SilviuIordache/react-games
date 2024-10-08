@@ -9,11 +9,11 @@ export enum GameState {
   END = 'END',
 }
 export default function FlippySquares() {
-  const gridSize = 15;
+  const gridSize = 5;
+  const redCells = 2;
+  const cellsToFill = gridSize * gridSize - redCells;
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
-
-  // Define the type for the cells
 
   const generateGridWithBlackSquares = () => {
     const newGrid = Array.from({ length: gridSize }, () =>
@@ -30,9 +30,19 @@ export default function FlippySquares() {
     setCells(freshCells);
   };
 
-  useEffect(() => {
-    resetGrid();
-  }, []);
+  const filledCells = useMemo(() => {
+    let blackCellCount = 0;
+
+    for (const row of cells) {
+      for (const cell of row) {
+        if (cell === 0) {
+          blackCellCount++;
+        }
+      }
+    }
+
+    return blackCellCount;
+  }, [cells]);
 
   const [redCoords, setRedCoords] = useState<Coordinate[]>();
 
@@ -62,7 +72,7 @@ export default function FlippySquares() {
     (x: number, y: number) => {
       switch (cells[x][y]) {
         case 0:
-          // console.log('you clicked a black square');
+          console.log('you clicked a black square');
           return;
         case 1:
           const newCells = cells.map((row) => [...row]);
@@ -83,12 +93,15 @@ export default function FlippySquares() {
     resetGrid();
     setGameState(GameState.PLAYING);
 
-    const newRedCoords = generateRedCoords(10);
+    const newRedCoords = generateRedCoords(redCells);
     setRedCoords(newRedCoords);
   };
 
   return (
     <div>
+      <div>
+        {filledCells} / {cellsToFill}
+      </div>
       <div>GameState: {gameState}</div>
 
       <button
