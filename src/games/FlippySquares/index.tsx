@@ -12,6 +12,7 @@ export default function FlippySquares() {
   const gridSize = 5;
   const redCells = 2;
   const cellsToFill = gridSize * gridSize - redCells;
+  const [score, setScore] = useState(0);
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
 
@@ -72,18 +73,20 @@ export default function FlippySquares() {
     (x: number, y: number) => {
       switch (cells[x][y]) {
         case 0:
-          console.log('you clicked a black square');
           return;
         case 1:
+          setScore((score) => score + 10);
           const newCells = cells.map((row) => [...row]);
           newCells[x][y] = 0;
+
           setCells(newCells);
           return;
         case 2:
-          console.log('you clicked a red square');
+          setScore((score) => score - 25);
+
           return;
         default:
-          console.log('you clicked a red square');
+          return;
       }
     },
     [cells]
@@ -99,8 +102,11 @@ export default function FlippySquares() {
 
   return (
     <div>
-      <div>
-        {filledCells} / {cellsToFill}
+      <div className="flex justify-between">
+        <div>{score}</div>
+        <div>
+          {filledCells} / {cellsToFill}
+        </div>
       </div>
       <div>GameState: {gameState}</div>
 
