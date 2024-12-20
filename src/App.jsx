@@ -3,11 +3,13 @@ import './App.css';
 import { gamesList } from './games/games';
 import Home from './Home';
 import { FlippySquares, ReactionGrid } from './games';
+import TypeFast from './games/TypeFast';
 
 function App() {
   return (
+    <TypeFast />
     // <ReactionGrid/>
-    <FlippySquares/>
+    // <FlippySquares/>
     // <Router>
     //   <Routes>
     //     <Route key="/" path="/" element={<Home />} />
