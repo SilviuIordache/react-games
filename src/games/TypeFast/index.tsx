@@ -43,7 +43,7 @@ const TypeFast = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex justify-between gap-2">
+      <div className="grid grid-cols-3 gap-2">
         {words.map((word, index) => (
           <WordRenderer key={index} word={word} userInput={inputValue} />
         ))}
