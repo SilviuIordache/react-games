@@ -1,10 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WordRenderer from './WordRenderer';
+import { generate } from 'random-words';
 
 const TypeFast = () => {
-  const words = ['dog', 'mouse', 'cat'];
+  const WORD_COUNT = 9;
+  const [words, setWords] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const newWords = Array.from(
+      { length: WORD_COUNT },
+      () => generate({ minLength: 3, maxLength: 10 }) as string
+    );
+    setWords(newWords);
+  }, []);
 
   useEffect(() => {
     // Automatically focus the input field when the component mounts
@@ -21,6 +31,13 @@ const TypeFast = () => {
     if (event.key === 'Enter') {
       console.log(inputValue);
       setInputValue('');
+
+      // remove the element that was just submitted
+      const newWords = [...words];
+      const index = words.findIndex((word) => word === inputValue);
+      // newWords.splice(index, 1);
+      newWords[index] = '';
+      setWords(newWords);
     }
   };
 
