@@ -7,6 +7,13 @@ const TypeFast = () => {
   const [words, setWords] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const [score, setScore] = useState(0);
+
+  const filledSlots = words.reduce(
+    (accumulator: number, currentValue: string) =>
+      accumulator + (currentValue !== '' ? 1 : 0),
+    0
+  );
 
   useEffect(() => {
     const newWords = Array.from(
@@ -34,14 +41,24 @@ const TypeFast = () => {
       // remove the element that was just submitted
       const newWords = [...words];
       const index = words.findIndex((word) => word === inputValue);
-      // newWords.splice(index, 1);
-      newWords[index] = '';
-      setWords(newWords);
+
+      if (index !== -1) {
+        newWords[index] = '';
+        setWords(newWords);
+
+        // update the score based on the length of the word
+        const wordScore = inputValue.length;
+        setScore((score) => score + wordScore);
+      }
     }
   };
 
   return (
     <div className="flex flex-col gap-10">
+      <div className="flex justify-between">
+        <div>Score: {score}</div>
+        <div>Filled: {filledSlots} / 9</div>
+      </div>
       <div className="grid grid-cols-3">
         {words.map((word, index) => (
           <div
