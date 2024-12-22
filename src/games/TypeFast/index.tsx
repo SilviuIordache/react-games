@@ -1,14 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WordRenderer from './WordRenderer';
 import { generate } from 'random-words';
+import { StartDialog } from './StartDialog';
+import { EndDialog } from './EndDialog';
 
 const TypeFast = () => {
-  const WORD_COUNT = 9;
+  const MAX_WORDS = 9;
   const FILL_INTERVAL = 1000 * 1; // seconds
-  const [words, setWords] = useState<string[]>(Array(WORD_COUNT).fill(''));
+  const [words, setWords] = useState<string[]>(Array(MAX_WORDS).fill(''));
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [score, setScore] = useState(0);
+  const [wordsTyped, setWordsTypes] = useState(0);
+
+  enum GameState {
+    START = 'START',
+    PLAYING = 'PLAYING',
+    END = 'END',
+  }
+
+  const [gameState, setGameState] = useState(GameState.START);
 
   const filledSlots = words.reduce(
     (accumulator: number, currentValue: string) =>
@@ -17,6 +28,8 @@ const TypeFast = () => {
   );
 
   useEffect(() => {
+    if (gameState !== GameState.PLAYING) return;
+
     const intervalId = setInterval(() => {
       const availableIndexes = words
         .map((word, index) => (word === '' ? index : -1))
@@ -38,7 +51,7 @@ const TypeFast = () => {
     }, FILL_INTERVAL);
 
     return () => clearInterval(intervalId);
-  }, [words]);
+  }, [gameState, words]);
 
   useEffect(() => {
     // Automatically focus the input field when the component mounts
@@ -46,6 +59,12 @@ const TypeFast = () => {
       inputRef.current.focus();
     }
   }, []);
+
+  useEffect(() => {
+    if (filledSlots === MAX_WORDS) {
+      setGameState(GameState.END);
+    }
+  }, [filledSlots]);
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
@@ -65,13 +84,41 @@ const TypeFast = () => {
 
         // update the score based on the length of the word
         const wordScore = inputValue.length;
+        setWordsTypes((wordsTyped) => wordsTyped + 1);
         setScore((score) => score + wordScore);
       }
     }
   };
 
+  const handleStartGame = () => {
+    setGameState(GameState.PLAYING);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleRestartGame = () => {
+    setInputValue('');
+    setGameState(GameState.START);
+    setScore(0);
+    setWordsTypes(0);
+    setWords(Array(MAX_WORDS).fill(''));
+  };
+
   return (
     <div className="flex flex-col gap-10">
+      <StartDialog
+        onStartGame={handleStartGame}
+        isOpen={gameState === GameState.START}
+      />
+      <EndDialog
+        isOpen={gameState === GameState.END}
+        score={score}
+        onRestartGame={handleRestartGame}
+        wordsTyped={wordsTyped}
+      />
+      <div>{gameState}</div>
       <div className="flex justify-between">
         <div>Score: {score}</div>
         <div>Filled: {filledSlots} / 9</div>
