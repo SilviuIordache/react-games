@@ -5,7 +5,7 @@ import { generate } from 'random-words';
 const TypeFast = () => {
   const WORD_COUNT = 9;
   const FILL_INTERVAL = 1000 * 1; // seconds
-  const [words, setWords] = useState<string[]>(Array(9).fill(''));
+  const [words, setWords] = useState<string[]>(Array(WORD_COUNT).fill(''));
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [score, setScore] = useState(0);
