@@ -29,7 +29,6 @@ const TypeFast = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      console.log(inputValue);
       setInputValue('');
 
       // remove the element that was just submitted
@@ -43,11 +42,17 @@ const TypeFast = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3">
         {words.map((word, index) => (
-          <WordRenderer key={index} word={word} userInput={inputValue} />
+          <div
+            key={index}
+            className="w-24 h-12 flex items-center justify-center border border-gray-600"
+          >
+            <WordRenderer word={word} userInput={inputValue} />
+          </div>
         ))}
       </div>
+
       <input
         ref={inputRef}
         value={inputValue}
