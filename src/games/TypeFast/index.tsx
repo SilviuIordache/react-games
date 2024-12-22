@@ -4,7 +4,7 @@ import { generate } from 'random-words';
 
 const TypeFast = () => {
   const WORD_COUNT = 9;
-  const [words, setWords] = useState<string[]>([]);
+  const [words, setWords] = useState<string[]>(Array(9).fill(''));
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [score, setScore] = useState(0);
@@ -16,12 +16,28 @@ const TypeFast = () => {
   );
 
   useEffect(() => {
-    const newWords = Array.from(
-      { length: WORD_COUNT },
-      () => generate({ minLength: 3, maxLength: 10 }) as string
-    );
-    setWords(newWords);
-  }, []);
+    const intervalId = setInterval(() => {
+      const availableIndexes = words
+        .map((word, index) => (word === '' ? index : -1))
+        .filter((index) => index !== -1);
+
+      if (availableIndexes.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableIndexes.length);
+        const newWords = [...words];
+
+        const newWord = generate({
+          minLength: 3,
+          maxLength: 10,
+        }) as string;
+
+        newWords[availableIndexes[randomIndex]] = newWord;
+
+        setWords(newWords);
+      }
+    }, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [words]);
 
   useEffect(() => {
     // Automatically focus the input field when the component mounts
