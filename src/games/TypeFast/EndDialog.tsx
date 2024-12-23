@@ -5,24 +5,22 @@ interface Props {
   onRestartGame: () => void;
   isOpen: boolean;
   score: number;
-  wordsTyped: number;
+  wordsScored: number;
 }
 export const EndDialog = ({
   isOpen,
   onRestartGame,
   score,
-  wordsTyped,
+  wordsScored,
 }: Props) => {
   const handleRestart = () => {
     onRestartGame();
   };
 
   return (
-    <Dialog isOpen={isOpen} title="Results" hideCloseButton>
-      <p className="mb-4 mt-8">Game Over</p>
-
+    <Dialog isOpen={isOpen} title="Game Over" hideCloseButton>
       <p>Score: {score}</p>
-      <p>Words: {wordsTyped}</p>
+      <p>Words: {wordsScored}</p>
 
       <div className="flex justify-end">
         <button

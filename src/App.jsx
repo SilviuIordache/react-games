@@ -8,7 +8,7 @@ import TypeFast from './games/TypeFast';
 function App() {
   return (
     <TypeFast />
-    // <ReactionGrid/>
+    // <ReactionGrid />
     // <FlippySquares/>
     // <Router>
     //   <Routes>

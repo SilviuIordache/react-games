@@ -6,12 +6,15 @@ import { EndDialog } from './EndDialog';
 
 const TypeFast = () => {
   const MAX_WORDS = 9;
-  const FILL_INTERVAL = 1000 * 1; // seconds
+  const [FILL_INTERVAL, setFillInterval] = useState(2000 * 1); // seconds
+  const FILL_MINIMUM = 750;
+  const FILL_DECREASE_AMOUNT = 150;
+  const FILL_DECREASE_INTERVAL = 1000 * 10;
   const [words, setWords] = useState<string[]>(Array(MAX_WORDS).fill(''));
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [score, setScore] = useState(0);
-  const [wordsTyped, setWordsTypes] = useState(0);
+  const [wordsScored, setWordsTypes] = useState(0);
 
   enum GameState {
     START = 'START',
@@ -27,44 +30,66 @@ const TypeFast = () => {
     0
   );
 
+  const updateWords = (currentWords: string[]): string[] => {
+    const availableSlots = currentWords
+      .map((word, index) => (word === '' ? index : -1))
+      .filter((index) => index !== -1);
+
+    if (availableSlots.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableSlots.length);
+      const newWords = [...currentWords];
+
+      const newWord = generate({
+        minLength: 3,
+        maxLength: 10,
+      }) as string;
+
+      const newIndex = availableSlots[randomIndex];
+      newWords[newIndex] = newWord;
+
+      return newWords;
+    }
+
+    return currentWords;
+  };
+
+  // add new words every interval
   useEffect(() => {
     if (gameState !== GameState.PLAYING) return;
 
     const intervalId = setInterval(() => {
-      const availableIndexes = words
-        .map((word, index) => (word === '' ? index : -1))
-        .filter((index) => index !== -1);
-
-      if (availableIndexes.length > 0) {
-        const randomIndex = Math.floor(Math.random() * availableIndexes.length);
-        const newWords = [...words];
-
-        const newWord = generate({
-          minLength: 3,
-          maxLength: 10,
-        }) as string;
-
-        newWords[availableIndexes[randomIndex]] = newWord;
-
-        setWords(newWords);
-      }
+      setWords(updateWords);
     }, FILL_INTERVAL);
 
     return () => clearInterval(intervalId);
-  }, [gameState, words]);
+  }, [gameState, FILL_INTERVAL]);
 
+  // Automatically focus the input field when the component mounts
   useEffect(() => {
-    // Automatically focus the input field when the component mounts
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
+  // gameOver watcher
   useEffect(() => {
     if (filledSlots === MAX_WORDS) {
       setGameState(GameState.END);
     }
   }, [filledSlots]);
+
+  // decrease spawn interval every 5 seconds
+  useEffect(() => {
+    if (gameState !== GameState.PLAYING) return;
+
+    const intervalId = setInterval(() => {
+      setFillInterval((prevInterval) =>
+        Math.max(prevInterval - FILL_DECREASE_AMOUNT, FILL_MINIMUM)
+      );
+    }, FILL_DECREASE_INTERVAL);
+
+    return () => clearInterval(intervalId);
+  }, [gameState]);
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
@@ -84,7 +109,7 @@ const TypeFast = () => {
 
         // update the score based on the length of the word
         const wordScore = inputValue.length;
-        setWordsTypes((wordsTyped) => wordsTyped + 1);
+        setWordsTypes((wordsScored) => wordsScored + 1);
         setScore((score) => score + wordScore);
       }
     }
@@ -108,6 +133,7 @@ const TypeFast = () => {
 
   return (
     <div className="flex flex-col gap-10">
+      <div>FILL_INTERVAL: {FILL_INTERVAL}</div>
       <StartDialog
         onStartGame={handleStartGame}
         isOpen={gameState === GameState.START}
@@ -116,7 +142,7 @@ const TypeFast = () => {
         isOpen={gameState === GameState.END}
         score={score}
         onRestartGame={handleRestartGame}
-        wordsTyped={wordsTyped}
+        wordsScored={wordsScored}
       />
       <div>{gameState}</div>
       <div className="flex justify-between">
