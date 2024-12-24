@@ -1,17 +1,21 @@
-import { FlippySquares, ReactionGrid, DrawQR } from './index';
+import { ReactionGrid, TypeFast } from './index';
 
 export const gamesList = [
   {
     name: 'Reaction Grid',
     path: '/reaction-grid',
     component: ReactionGrid,
-    status: 'done',
   },
   {
-    name: 'Flippy Squares',
-    path: '/flippy-squares',
-    component: FlippySquares,
-    status: 'wip',
+    name: 'Type Fast',
+    path: '/type-fast',
+    component: TypeFast,
   },
-  { name: 'DrawQR', path: '/draw-qr', component: DrawQR, status: 'wip' },
+  // {
+  //   name: 'Flippy Squares',
+  //   path: '/flippy-squares',
+  //   component: FlippySquares,
+  //   status: 'wip',
+  // },
+  // { name: 'DrawQR', path: '/draw-qr', component: DrawQR, status: 'wip' },
 ];

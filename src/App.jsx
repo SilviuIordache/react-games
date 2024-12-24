@@ -2,26 +2,24 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { gamesList } from './games/games';
 import Home from './Home';
-import { FlippySquares, ReactionGrid } from './games';
-import TypeFast from './games/TypeFast';
 
 function App() {
   return (
-    <TypeFast />
+    // <TypeFast />
     // <ReactionGrid />
     // <FlippySquares/>
-    // <Router>
-    //   <Routes>
-    //     <Route key="/" path="/" element={<Home />} />
-    //     {gamesList.map((game) => (
-    //       <Route
-    //         key={game.path}
-    //         path={game.path}
-    //         element={<game.component />}
-    //       />
-    //     ))}
-    //   </Routes>
-    // </Router>
+    <Router>
+      <Routes>
+        <Route key="/" path="/" element={<Home />} />
+        {gamesList.map((game) => (
+          <Route
+            key={game.path}
+            path={game.path}
+            element={<game.component />}
+          />
+        ))}
+      </Routes>
+    </Router>
   );
 }
 
