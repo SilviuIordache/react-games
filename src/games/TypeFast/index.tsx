@@ -6,7 +6,7 @@ import { EndDialog } from './EndDialog';
 
 const TypeFast = () => {
   const MAX_WORDS = 9;
-  const FILL_INITIAL_VALUE = 1800;
+  const FILL_INITIAL_VALUE = 2500;
   const FILL_MINIMUM = 750;
   const FILL_DECREASE_AMOUNT = 150;
   const FILL_DECREASE_INTERVAL = 1000 * 10;
