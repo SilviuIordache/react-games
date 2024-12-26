@@ -6,7 +6,7 @@ import { EndDialog } from './EndDialog';
 
 const TypeFast = () => {
   const MAX_WORDS = 9;
-  const FILL_INITIAL_VALUE = 1500;
+  const FILL_INITIAL_VALUE = 1800;
   const FILL_MINIMUM = 750;
   const FILL_DECREASE_AMOUNT = 150;
   const FILL_DECREASE_INTERVAL = 1000 * 10;
@@ -116,8 +116,6 @@ const TypeFast = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      setInputValue('');
-
       // remove the element that was just submitted
       const newWords = [...words];
       const index = words.findIndex((word) => word === inputValue);
@@ -130,6 +128,7 @@ const TypeFast = () => {
         const wordScore = inputValue.length;
         setWordsTypes((wordsScored) => wordsScored + 1);
         setScore((score) => score + wordScore);
+        setInputValue('');
       }
     }
   };
