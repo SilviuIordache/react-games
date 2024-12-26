@@ -6,7 +6,7 @@ import { EndDialog } from './EndDialog';
 
 const TypeFast = () => {
   const MAX_WORDS = 9;
-  const FILL_INITIAL_VALUE = 2000;
+  const FILL_INITIAL_VALUE = 1500;
   const FILL_MINIMUM = 750;
   const FILL_DECREASE_AMOUNT = 150;
   const FILL_DECREASE_INTERVAL = 1000 * 10;
@@ -174,7 +174,7 @@ const TypeFast = () => {
           <div>Score: {score}</div>
           <div>Filled: {filledSlots} / 9</div>
         </div>
-        
+
         <div className="flex justify-between">
           <div>Time: {elapsedTime} s</div>
           <div>Speed: {wordSpeed().toFixed(2)}x</div>
