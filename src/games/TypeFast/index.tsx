@@ -6,15 +6,17 @@ import { EndDialog } from './EndDialog';
 
 const TypeFast = () => {
   const MAX_WORDS = 9;
-  const [FILL_INTERVAL, setFillInterval] = useState(2000 * 1); // seconds
+  const FILL_INITIAL_VALUE = 2000;
   const FILL_MINIMUM = 750;
   const FILL_DECREASE_AMOUNT = 150;
   const FILL_DECREASE_INTERVAL = 1000 * 10;
+  const [fill_interval, setFillInterval] = useState(FILL_INITIAL_VALUE * 1); // seconds
   const [words, setWords] = useState<string[]>(Array(MAX_WORDS).fill(''));
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [score, setScore] = useState(0);
   const [wordsScored, setWordsTypes] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   enum GameState {
     START = 'START',
@@ -59,10 +61,10 @@ const TypeFast = () => {
 
     const intervalId = setInterval(() => {
       setWords(updateWords);
-    }, FILL_INTERVAL);
+    }, fill_interval);
 
     return () => clearInterval(intervalId);
-  }, [gameState, FILL_INTERVAL]);
+  }, [gameState, fill_interval]);
 
   // Automatically focus the input field when the component mounts
   useEffect(() => {
@@ -87,6 +89,19 @@ const TypeFast = () => {
         Math.max(prevInterval - FILL_DECREASE_AMOUNT, FILL_MINIMUM)
       );
     }, FILL_DECREASE_INTERVAL);
+
+    return () => clearInterval(intervalId);
+  }, [gameState]);
+
+  // Timer effect
+  useEffect(() => {
+    if (gameState !== GameState.PLAYING) return;
+
+    const startTime = Date.now();
+
+    const intervalId = setInterval(() => {
+      setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, [gameState]);
@@ -129,11 +144,12 @@ const TypeFast = () => {
     setScore(0);
     setWordsTypes(0);
     setWords(Array(MAX_WORDS).fill(''));
+    setFillInterval(FILL_INITIAL_VALUE);
+    setElapsedTime(0);
   };
 
   return (
     <div className="flex flex-col gap-10">
-      <div>FILL_INTERVAL: {FILL_INTERVAL}</div>
       <StartDialog
         onStartGame={handleStartGame}
         isOpen={gameState === GameState.START}
@@ -143,7 +159,11 @@ const TypeFast = () => {
         score={score}
         onRestartGame={handleRestartGame}
         wordsScored={wordsScored}
+        elapsedTime={elapsedTime}
       />
+      <div>Time: {elapsedTime} s</div>
+
+      <div>fill_interval: {fill_interval}</div>
       <div>{gameState}</div>
       <div className="flex justify-between">
         <div>Score: {score}</div>
