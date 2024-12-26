@@ -118,7 +118,9 @@ const TypeFast = () => {
     if (event.key === 'Enter') {
       // remove the element that was just submitted
       const newWords = [...words];
-      const index = words.findIndex((word) => word === inputValue);
+
+      const normalisedWord = inputValue.toLocaleLowerCase();
+      const index = words.findIndex((word) => word === normalisedWord);
 
       if (index !== -1) {
         newWords[index] = '';

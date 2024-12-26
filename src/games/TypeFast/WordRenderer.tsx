@@ -8,15 +8,17 @@ interface Props {
 const WordRenderer = ({ word, userInput }: Props) => {
   const wordArray = word.split('');
 
+  const normalisedUserInput = userInput.toLocaleLowerCase();
+
   const isCompatible = () => {
-    for (let i = 0; i < userInput.length; i++) {
-      if (userInput[i] !== word[i]) return false;
+    for (let i = 0; i < normalisedUserInput.length; i++) {
+      if (normalisedUserInput[i] !== word[i]) return false;
     }
     return true;
   };
 
   const getLetterColor = (index) => {
-    if (!isCompatible() || index >= userInput.length) {
+    if (!isCompatible() || index >= normalisedUserInput.length) {
       return 'text-gray-100';
     }
 
