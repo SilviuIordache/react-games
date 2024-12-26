@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { gamesList } from './games/games';
 import Home from './Home';
+import Layout from './components/Layouts';
 
 function App() {
   return (
@@ -15,7 +16,11 @@ function App() {
           <Route
             key={game.path}
             path={game.path}
-            element={<game.component />}
+            element={
+              <Layout>
+                <game.component />
+              </Layout>
+            }
           />
         ))}
       </Routes>

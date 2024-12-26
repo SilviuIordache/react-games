@@ -3,6 +3,7 @@ import WordRenderer from './WordRenderer';
 import { generate } from 'random-words';
 import { StartDialog } from './StartDialog';
 import { EndDialog } from './EndDialog';
+import BackButton from '../../components/BackButton';
 
 const TypeFast = () => {
   const MAX_WORDS = 9;
@@ -179,7 +180,6 @@ const TypeFast = () => {
           <div>Time: {elapsedTime} s</div>
           <div>Speed: {wordSpeed().toFixed(2)}x</div>
         </div>
-
       </div>
       <div className="grid grid-cols-3">
         {words.map((word, index) => (
