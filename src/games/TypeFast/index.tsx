@@ -32,6 +32,10 @@ const TypeFast = () => {
     0
   );
 
+  const wordSpeed = () => {
+    return FILL_INITIAL_VALUE / fill_interval;
+  };
+
   const updateWords = (currentWords: string[]): string[] => {
     const availableSlots = currentWords
       .map((word, index) => (word === '' ? index : -1))
@@ -161,13 +165,21 @@ const TypeFast = () => {
         wordsScored={wordsScored}
         elapsedTime={elapsedTime}
       />
-      <div>Time: {elapsedTime} s</div>
 
-      <div>fill_interval: {fill_interval}</div>
-      <div>{gameState}</div>
-      <div className="flex justify-between">
-        <div>Score: {score}</div>
-        <div>Filled: {filledSlots} / 9</div>
+      {/* <div>fill_interval: {fill_interval}</div>
+      <div>{gameState}</div> */}
+
+      <div>
+        <div className="flex justify-between">
+          <div>Score: {score}</div>
+          <div>Filled: {filledSlots} / 9</div>
+        </div>
+        
+        <div className="flex justify-between">
+          <div>Time: {elapsedTime} s</div>
+          <div>Speed: {wordSpeed().toFixed(2)}x</div>
+        </div>
+
       </div>
       <div className="grid grid-cols-3">
         {words.map((word, index) => (
