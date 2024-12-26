@@ -167,9 +167,6 @@ const TypeFast = () => {
         elapsedTime={elapsedTime}
       />
 
-      {/* <div>fill_interval: {fill_interval}</div>
-      <div>{gameState}</div> */}
-
       <div>
         <div className="flex justify-between">
           <div>Score: {score}</div>
