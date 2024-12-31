@@ -3,6 +3,7 @@ import './App.css';
 import { gamesList } from './games/games';
 import Home from './Home';
 import Layout from './components/Layouts';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           />
         ))}
       </Routes>
+      <Analytics />
     </Router>
   );
 }
