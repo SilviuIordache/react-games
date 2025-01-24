@@ -1,23 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Cell } from './types';
 
 interface Props {
-  x: number;
-  y: number;
   onSquareClick: (x: number, y: number) => void;
-  cell: number;
+  cell: Cell;
 }
 
-export const Square = ({ onSquareClick, cell, x, y }: Props) => {
+export const Square = ({ onSquareClick, cell }: Props) => {
   return (
     <div
-      onClick={() => onSquareClick(x, y)}
+      onClick={() => onSquareClick(cell.coordinate.x, cell.coordinate.y)}
       className={classNames(
         'bg-black w-8 h-8 border border-gray-500 hover:bg-gray-600',
         {
-          'bg-black': cell === 0,
-          'bg-white': cell === 1,
-          'bg-red-500': cell === 2,
+          'bg-black': cell.visible === false,
+          'bg-white': cell.visible === true,
+          'bg-red-500': cell.bomb === true,
         }
       )}
     ></div>

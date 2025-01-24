@@ -1,8 +1,9 @@
 import React from 'react';
 import { Square } from './Square';
+import { Cell } from './types';
 
 interface Props {
-  cells: number[][];
+  cells: Cell[][];
   gridSize: number;
   onSquareClick: (i: number, j: number) => void;
 }
@@ -15,14 +16,11 @@ export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
 
     for (let j = 0; j < gridSize; j++) {
       const cell = cells[i][j];
-      
 
       const squareCell = (
         <Square
           key={`${i}-${j}-${cell}`}
           cell={cell}
-          x={i}
-          y={j}
           onSquareClick={onSquareClick}
         />
       );
