@@ -51,10 +51,17 @@ export default function Minesweeper() {
   };
 
   const handleSquareClick = useCallback(
-    (x: number, y: number) => {
+    (event, x: number, y: number) => {
       // set the cell to visible
       const newCell = cells[x][y];
-      newCell.visible = true;
+
+      if (event.button === 0) {
+        console.log('Left click');
+        newCell.visible = true;
+      } else if (event.button === 2) {
+        console.log('Right click');
+        newCell.marked = true;
+      }
 
       // update the grid
       const newGrid = cells.map((row) => [...row]);

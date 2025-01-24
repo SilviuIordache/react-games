@@ -3,23 +3,36 @@ import classNames from 'classnames';
 import { Cell } from './types';
 
 interface Props {
-  onSquareClick: (x: number, y: number) => void;
+  onSquareClick: (event, x: number, y: number) => void;
   cell: Cell;
 }
 
 export const Square = ({ onSquareClick, cell }: Props) => {
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+    onSquareClick(event, cell.coordinate.x, cell.coordinate.y);
+  };
+
   return (
     <div
-      onClick={() => onSquareClick(cell.coordinate.x, cell.coordinate.y)}
+      onClick={(event) =>
+        onSquareClick(event, cell.coordinate.x, cell.coordinate.y)
+      }
+      onContextMenu={handleContextMenu}
       className={classNames(
-        'bg-black w-8 h-8 border border-gray-500 hover:bg-gray-600 text-red-600',
+        'bg-gray-700 w-8 h-8 border border-gray-500 hover:bg-gray-400 border-t-slate-400',
         {
-          'bg-black': cell.visible === false,
+          'bg-gray-700': cell.visible === false,
           'bg-white': cell.visible === true,
         }
       )}
     >
-      {cell.bomb && cell.visible ? '●' : ''}
+      <span className="text-red-600" style={{ userSelect: 'none' }}>
+        {cell.bomb && cell.visible ? '●' : ''}
+      </span>
+      <span style={{ userSelect: 'none' }}>
+        {cell.marked && !cell.visible ? '🚩' : ''}
+      </span>
     </div>
   );
 };
