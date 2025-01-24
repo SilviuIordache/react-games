@@ -104,12 +104,12 @@ export default function Minesweeper() {
         newCell.marked = true;
       }
 
-      updateCellInGrid(x, y, newCell);
+      updateGridWithNewCell(x, y, newCell);
     },
     [cells]
   );
 
-  function updateCellInGrid(x: number, y: number, newCell: Cell) {
+  function updateGridWithNewCell(x: number, y: number, newCell: Cell) {
     // update the grid
     const newGrid = cells.map((row) => [...row]);
     newGrid[x][y] = newCell;
