@@ -127,30 +127,30 @@ export default function Minesweeper() {
     newCell.visible = true;
     updateGridWithNewCell(sourceX, sourceY, newCell);
 
-    if (newCell.nearbyBombs === 0) {
-      // Only reveal neighbors if no nearby bombs
-      const directions = [
-        { x: -1, y: -1 },
-        { x: -1, y: 0 },
-        { x: -1, y: 1 },
-        { x: 0, y: -1 },
-        { x: 0, y: 1 },
-        { x: 1, y: -1 },
-        { x: 1, y: 0 },
-        { x: 1, y: 1 },
-      ];
+    if (newCell.nearbyBombs > 0) return;
 
-      directions.forEach(({ x: dx, y: dy }) => {
-        const newX = sourceX + dx;
-        const newY = sourceY + dy;
+    // Only reveal neighbors if no nearby bombs
+    const directions = [
+      { x: -1, y: -1 },
+      { x: -1, y: 0 },
+      { x: -1, y: 1 },
+      { x: 0, y: -1 },
+      { x: 0, y: 1 },
+      { x: 1, y: -1 },
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+    ];
 
-        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-          if (!cells[newX][newY].bomb && !cells[newX][newY].visible) {
-            performReveal(newX, newY);
-          }
+    directions.forEach(({ x: dx, y: dy }) => {
+      const newX = sourceX + dx;
+      const newY = sourceY + dy;
+
+      if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+        if (!cells[newX][newY].bomb && !cells[newX][newY].visible) {
+          performReveal(newX, newY);
         }
-      });
-    }
+      }
+    });
   }
 
   return (
