@@ -11,9 +11,13 @@ export enum GameState {
 }
 export default function Minesweeper() {
   const gridSize = 7;
-  const redCells = 4;
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
+
+  const getBombChance = () => {
+    const bombOccurence = 10; // value from 1 to 100
+    return Math.random() * 100 < bombOccurence;
+  };
 
   const generateGrid = () => {
     const newGrid: Cell[][] = [];
@@ -23,10 +27,10 @@ export default function Minesweeper() {
 
       for (let y = 0; y < gridSize; y++) {
         const cell = {
-          coordinate: { x, y }, 
-          visible: false, 
-          bomb: false, 
-          marked: false, 
+          coordinate: { x, y },
+          visible: false,
+          bomb: getBombChance(),
+          marked: false,
         };
 
         row.push(cell);
@@ -46,24 +50,12 @@ export default function Minesweeper() {
     setCells(freshCells);
   };
 
-  // init grid
-  const generateRedCoords = (amount: number): Coordinate[] => {
-    const coords: Coordinate[] = [];
-    for (let i = 0; i < amount; i++) {
-      coords.push({
-        x: Math.floor(Math.random() * gridSize),
-        y: Math.floor(Math.random() * gridSize),
-      });
-    }
-    return coords;
-  };
-
   const handleSquareClick = useCallback(
     (x: number, y: number) => {
       // set the cell to visible
       const newCell = cells[x][y];
       newCell.visible = true;
-      
+
       // update the grid
       const newGrid = cells.map((row) => [...row]);
       newGrid[x][y] = newCell;
@@ -72,12 +64,14 @@ export default function Minesweeper() {
     [cells]
   );
 
-
   const handleStartGame = () => {
     resetGrid();
     setGameState(GameState.PLAYING);
-
   };
+
+  function chance(x: number): boolean {
+    return Math.random() * 100 < x;
+  }
 
   return (
     <div>

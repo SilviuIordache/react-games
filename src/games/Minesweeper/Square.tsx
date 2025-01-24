@@ -12,13 +12,14 @@ export const Square = ({ onSquareClick, cell }: Props) => {
     <div
       onClick={() => onSquareClick(cell.coordinate.x, cell.coordinate.y)}
       className={classNames(
-        'bg-black w-8 h-8 border border-gray-500 hover:bg-gray-600',
+        'bg-black w-8 h-8 border border-gray-500 hover:bg-gray-600 text-red-600',
         {
           'bg-black': cell.visible === false,
           'bg-white': cell.visible === true,
-          'bg-red-500': cell.bomb === true,
         }
       )}
-    ></div>
+    >
+      {cell.bomb && cell.visible ? '●' : ''}
+    </div>
   );
 };
