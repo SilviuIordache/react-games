@@ -32,7 +32,7 @@ export const Square = ({ onSquareClick, cell }: Props) => {
           {cell.bomb && cell.visible ? '●' : ''}
         </span>
         <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
-        <span>{cell.visible && cell.nearbyBombs}</span>
+        <span>{cell.visible && cell.nearbyBombs > 0 && cell.nearbyBombs}</span>
       </div>
     </div>
   );

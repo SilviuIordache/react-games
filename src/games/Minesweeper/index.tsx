@@ -11,11 +11,11 @@ export enum GameState {
 }
 export default function Minesweeper() {
   const gridSize = 7;
+  const bombOccurence = 10; // value from 1 to 100
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
 
   const getBombChance = () => {
-    const bombOccurence = 10; // value from 1 to 100
     return Math.random() * 100 < bombOccurence;
   };
 
@@ -60,7 +60,7 @@ export default function Minesweeper() {
       for (let y = 0; y < gridSize; y++) {
         if (grid[x][y].bomb) {
           grid[x][y].nearbyBombs = 0;
-          return; // Exit the function if a bomb is found
+          continue; // Skip to the next cell if a bomb is found
         }
 
         let bombCounter = 0;
@@ -94,17 +94,16 @@ export default function Minesweeper() {
   const handleSquareClick = useCallback(
     (event, x: number, y: number) => {
       // set the cell to visible
-      const newCell = cells[x][y];
 
       if (event.button === 0) {
         // perform reveal
-        newCell.visible = true;
+        performReveal(x, y);
       } else if (event.button === 2) {
         // mark cell as potential bomb
+        const newCell = cells[x][y];
         newCell.marked = true;
+        updateGridWithNewCell(x, y, newCell);
       }
-
-      updateGridWithNewCell(x, y, newCell);
     },
     [cells]
   );
@@ -121,40 +120,38 @@ export default function Minesweeper() {
     setGameState(GameState.PLAYING);
   };
 
-  // function performReveal(sourceX, sourceY) {
+  function performReveal(sourceX, sourceY) {
+    const newCell = cells[sourceX][sourceY];
+    if (newCell.visible) return; // Prevent infinite recursion by checking visibility
 
-  //   cells[sourceX][sourceX]
-  //   const directions = [
-  //     { x: -1, y: -1 },
-  //     { x: -1, y: 0 },
-  //     { x: -1, y: 1 },
-  //     { x: 0, y: -1 },
-  //     { x: 0, y: 1 },
-  //     { x: 1, y: -1 },
-  //     { x: 1, y: 0 },
-  //     { x: 1, y: 1 },
-  //   ];
+    newCell.visible = true;
+    updateGridWithNewCell(sourceX, sourceY, newCell);
 
-  //   for (let x = 0; x < gridSize; x++) {
-  //     for (let y = 0; y < gridSize; y++) {
-  //       if (cells[x][y].nearbyBombs === 0) {
-  //         return; // Exit the function if a bomb is found
-  //       }
+    if (newCell.nearbyBombs === 0) {
+      // Only reveal neighbors if no nearby bombs
+      const directions = [
+        { x: -1, y: -1 },
+        { x: -1, y: 0 },
+        { x: -1, y: 1 },
+        { x: 0, y: -1 },
+        { x: 0, y: 1 },
+        { x: 1, y: -1 },
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
+      ];
 
-  //       directions.forEach(({ x: dx, y: dy }) => {
-  //         const newX = x + dx;
-  //         const newY = y + dy;
+      directions.forEach(({ x: dx, y: dy }) => {
+        const newX = sourceX + dx;
+        const newY = sourceY + dy;
 
-  //         if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-  //           if (cells[newX][newY].bomb) {
-  //             bombCounter++;
-  //           }
-  //         }
-  //       });
-
-  //     }
-  //   }
-  // }
+        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+          if (!cells[newX][newY].bomb && !cells[newX][newY].visible) {
+            performReveal(newX, newY);
+          }
+        }
+      });
+    }
+  }
 
   return (
     <div>
