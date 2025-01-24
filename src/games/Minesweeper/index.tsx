@@ -58,7 +58,10 @@ export default function Minesweeper() {
 
     for (let x = 0; x < gridSize; x++) {
       for (let y = 0; y < gridSize; y++) {
-        if (grid[x][y].bomb) continue;
+        if (grid[x][y].bomb) {
+          grid[x][y].nearbyBombs = 0;
+          return; // Exit the function if a bomb is found
+        }
 
         let bombCounter = 0;
         directions.forEach(({ x: dx, y: dy }) => {
@@ -94,10 +97,10 @@ export default function Minesweeper() {
       const newCell = cells[x][y];
 
       if (event.button === 0) {
-        console.log('Left click');
+        // perform reveal
         newCell.visible = true;
       } else if (event.button === 2) {
-        console.log('Right click');
+        // mark cell as potential bomb
         newCell.marked = true;
       }
 
@@ -113,6 +116,8 @@ export default function Minesweeper() {
     resetGrid();
     setGameState(GameState.PLAYING);
   };
+
+  useEffect(() => {}, [cells]);
 
   return (
     <div>
