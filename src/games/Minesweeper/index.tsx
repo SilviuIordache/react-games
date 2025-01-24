@@ -19,31 +19,69 @@ export default function Minesweeper() {
     return Math.random() * 100 < bombOccurence;
   };
 
-  const generateGrid = () => {
-    const newGrid: Cell[][] = [];
+  const [cells, setCells] = useState(() => generateGrid());
 
+  function generateCells(
+    gridSize: number,
+    getBombChance: () => boolean
+  ): Cell[][] {
+    const newGrid: Cell[][] = [];
     for (let x = 0; x < gridSize; x++) {
       const row: Cell[] = [];
-
       for (let y = 0; y < gridSize; y++) {
+        const isBomb = getBombChance();
         const cell = {
           coordinate: { x, y },
           visible: false,
-          bomb: getBombChance(),
+          bomb: isBomb,
+          nearbyBombs: 0,
           marked: false,
         };
-
         row.push(cell);
       }
-
       newGrid.push(row);
     }
-
-    // Return the newly created grid
     return newGrid;
-  };
+  }
 
-  const [cells, setCells] = useState(() => generateGrid());
+  function calculateBombCounters(grid: Cell[][], gridSize: number): void {
+    const directions = [
+      { x: -1, y: -1 },
+      { x: -1, y: 0 },
+      { x: -1, y: 1 },
+      { x: 0, y: -1 },
+      { x: 0, y: 1 },
+      { x: 1, y: -1 },
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+    ];
+
+    for (let x = 0; x < gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+        if (grid[x][y].bomb) continue;
+
+        let bombCounter = 0;
+        directions.forEach(({ x: dx, y: dy }) => {
+          const newX = x + dx;
+          const newY = y + dy;
+
+          if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+            if (grid[newX][newY].bomb) {
+              bombCounter++;
+            }
+          }
+        });
+
+        grid[x][y].nearbyBombs = bombCounter;
+      }
+    }
+  }
+
+  function generateGrid() {
+    const newGrid = generateCells(gridSize, getBombChance);
+    calculateBombCounters(newGrid, gridSize);
+    return newGrid;
+  }
 
   const resetGrid = () => {
     const freshCells = generateGrid();

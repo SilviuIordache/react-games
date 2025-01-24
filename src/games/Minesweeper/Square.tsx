@@ -23,7 +23,7 @@ export const Square = ({ onSquareClick, cell }: Props) => {
         'bg-gray-700 w-8 h-8 border border-gray-500 hover:bg-gray-400 border-t-slate-400',
         {
           'bg-gray-700': cell.visible === false,
-          'bg-white': cell.visible === true,
+          'bg-gray-800': cell.visible === true,
         }
       )}
     >
@@ -32,6 +32,7 @@ export const Square = ({ onSquareClick, cell }: Props) => {
           {cell.bomb && cell.visible ? '●' : ''}
         </span>
         <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
+        <span>{cell.visible && cell.nearbyBombs}</span>
       </div>
     </div>
   );
