@@ -27,12 +27,12 @@ export const Square = ({ onSquareClick, cell }: Props) => {
         }
       )}
     >
-      <span className="text-red-600" style={{ userSelect: 'none' }}>
-        {cell.bomb && cell.visible ? '●' : ''}
-      </span>
-      <span style={{ userSelect: 'none' }}>
-        {cell.marked && !cell.visible ? '🚩' : ''}
-      </span>
+      <div style={{ userSelect: 'none' }}>
+        <span className="text-red-600">
+          {cell.bomb && cell.visible ? '●' : ''}
+        </span>
+        <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
+      </div>
     </div>
   );
 };

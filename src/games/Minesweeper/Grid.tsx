@@ -5,7 +5,7 @@ import { Cell } from './types';
 interface Props {
   cells: Cell[][];
   gridSize: number;
-  onSquareClick: (i: number, j: number) => void;
+  onSquareClick: (event: () => void, i: number, j: number) => void;
 }
 
 export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
@@ -15,17 +15,13 @@ export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
     const row: JSX.Element[] = [];
 
     for (let j = 0; j < gridSize; j++) {
-      const cell = cells[i][j];
-
-      const squareCell = (
+      row.push(
         <Square
-          key={`${i}-${j}-${cell}`}
-          cell={cell}
+          key={`${i}-${j}-${cells[i][j]}`}
+          cell={cells[i][j]}
           onSquareClick={onSquareClick}
         />
       );
-
-      row.push(squareCell);
     }
 
     newGrid.push(
