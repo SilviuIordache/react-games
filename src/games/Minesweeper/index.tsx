@@ -76,10 +76,6 @@ export default function Minesweeper() {
     setGameState(GameState.PLAYING);
   };
 
-  function chance(x: number): boolean {
-    return Math.random() * 100 < x;
-  }
-
   return (
     <div>
       <div>GameState: {gameState}</div>
