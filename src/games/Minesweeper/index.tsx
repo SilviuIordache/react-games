@@ -30,7 +30,6 @@ export default function Minesweeper() {
   };
 
   // init grid
-
   const generateRedCoords = (amount: number): Coordinate[] => {
     const coords: Coordinate[] = [];
     for (let i = 0; i < amount; i++) {

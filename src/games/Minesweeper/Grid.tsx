@@ -12,11 +12,12 @@ export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
 
   for (let i = 0; i < gridSize; i++) {
     const row: JSX.Element[] = [];
-    
+
     for (let j = 0; j < gridSize; j++) {
       const cell = cells[i][j];
+      
 
-      row.push(
+      const squareCell = (
         <Square
           key={`${i}-${j}-${cell}`}
           cell={cell}
@@ -25,7 +26,10 @@ export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
           onSquareClick={onSquareClick}
         />
       );
+
+      row.push(squareCell);
     }
+
     newGrid.push(
       <div key={i} style={{ display: 'flex' }}>
         {row}
