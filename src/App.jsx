@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+import Layout from './components/Layouts';
 import { gamesList } from './games/games';
 import Home from './Home';
-import Layout from './components/Layouts';
-import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (

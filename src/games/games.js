@@ -1,4 +1,4 @@
-import { ReactionGrid, TypeFast } from './index';
+import { ReactionGrid, TypeFast, FlippySquares, Minesweeper } from './index';
 
 export const gamesList = [
   {
@@ -11,11 +11,17 @@ export const gamesList = [
     path: '/type-fast',
     component: TypeFast,
   },
-  // {
-  //   name: 'Flippy Squares',
-  //   path: '/flippy-squares',
-  //   component: FlippySquares,
-  //   status: 'wip',
-  // },
+  {
+    name: 'Flippy Squares',
+    path: '/flippy-squares',
+    component: FlippySquares,
+    status: 'wip',
+  },
+  {
+    name: 'Mine Sweeper',
+    path: '/minesweeper',
+    component: Minesweeper,
+
+  },
   // { name: 'DrawQR', path: '/draw-qr', component: DrawQR, status: 'wip' },
 ];
