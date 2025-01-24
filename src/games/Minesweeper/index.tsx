@@ -104,20 +104,57 @@ export default function Minesweeper() {
         newCell.marked = true;
       }
 
-      // update the grid
-      const newGrid = cells.map((row) => [...row]);
-      newGrid[x][y] = newCell;
-      setCells(newGrid);
+      updateCellInGrid(x, y, newCell);
     },
     [cells]
   );
+
+  function updateCellInGrid(x: number, y: number, newCell: Cell) {
+    // update the grid
+    const newGrid = cells.map((row) => [...row]);
+    newGrid[x][y] = newCell;
+    setCells(newGrid);
+  }
 
   const handleStartGame = () => {
     resetGrid();
     setGameState(GameState.PLAYING);
   };
 
-  useEffect(() => {}, [cells]);
+  // function performReveal(sourceX, sourceY) {
+
+  //   cells[sourceX][sourceX]
+  //   const directions = [
+  //     { x: -1, y: -1 },
+  //     { x: -1, y: 0 },
+  //     { x: -1, y: 1 },
+  //     { x: 0, y: -1 },
+  //     { x: 0, y: 1 },
+  //     { x: 1, y: -1 },
+  //     { x: 1, y: 0 },
+  //     { x: 1, y: 1 },
+  //   ];
+
+  //   for (let x = 0; x < gridSize; x++) {
+  //     for (let y = 0; y < gridSize; y++) {
+  //       if (cells[x][y].nearbyBombs === 0) {
+  //         return; // Exit the function if a bomb is found
+  //       }
+
+  //       directions.forEach(({ x: dx, y: dy }) => {
+  //         const newX = x + dx;
+  //         const newY = y + dy;
+
+  //         if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+  //           if (cells[newX][newY].bomb) {
+  //             bombCounter++;
+  //           }
+  //         }
+  //       });
+
+  //     }
+  //   }
+  // }
 
   return (
     <div>
