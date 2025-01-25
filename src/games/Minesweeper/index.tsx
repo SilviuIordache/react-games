@@ -2,16 +2,17 @@ import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { Grid } from './Grid';
 import { Cell } from './types';
 
-type Coordinate = { x: number; y: number };
-
 export enum GameState {
   START = 'START',
   PLAYING = 'PLAYING',
+  GAMEOVER = 'GAMEOVER',
   END = 'END',
 }
 export default function Minesweeper() {
   const gridSize = 7;
   const bombOccurence = 10; // value from 1 to 100
+
+  const [bombCounter, setBombCounter] = useState(0);
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
 
@@ -26,10 +27,14 @@ export default function Minesweeper() {
     getBombChance: () => boolean
   ): Cell[][] {
     const newGrid: Cell[][] = [];
+    let bombs = 0;
     for (let x = 0; x < gridSize; x++) {
       const row: Cell[] = [];
       for (let y = 0; y < gridSize; y++) {
         const isBomb = getBombChance();
+
+        if (isBomb) bombs++;
+
         const cell = {
           coordinate: { x, y },
           visible: false,
@@ -41,6 +46,9 @@ export default function Minesweeper() {
       }
       newGrid.push(row);
     }
+
+    setBombCounter(bombs);
+
     return newGrid;
   }
 
@@ -99,9 +107,16 @@ export default function Minesweeper() {
         // perform reveal
         performReveal(x, y);
       } else if (event.button === 2) {
+        if (cells[x][y].visible) return;
+
         // mark cell as potential bomb
         const newCell = cells[x][y];
-        newCell.marked = true;
+
+        if (newCell.marked === false) {
+          newCell.marked = true;
+        } else {
+          newCell.marked = false;
+        }
         updateGridWithNewCell(x, y, newCell);
       }
     },
@@ -122,9 +137,12 @@ export default function Minesweeper() {
 
   function performReveal(sourceX, sourceY) {
     const newCell = cells[sourceX][sourceY];
-    if (newCell.visible) return; // Prevent infinite recursion by checking visibility
+
+    // Prevent infinite recursion by checking visibility
+    if (newCell.visible) return;
 
     newCell.visible = true;
+
     updateGridWithNewCell(sourceX, sourceY, newCell);
 
     if (newCell.nearbyBombs > 0) return;
@@ -153,6 +171,18 @@ export default function Minesweeper() {
     });
   }
 
+  useEffect(() => {
+    const revealedCells = cells.flat().filter((cell) => cell.visible === true);
+
+    const revealedCellsCount = revealedCells.length;
+
+    const cellsToBeRevealed = gridSize * gridSize - bombCounter;
+
+    if (revealedCellsCount === cellsToBeRevealed) {
+      setGameState(GameState.END);
+    }
+  }, [cells]);
+
   return (
     <div>
       <div>GameState: {gameState}</div>
@@ -163,6 +193,10 @@ export default function Minesweeper() {
       >
         {gameState === GameState.START ? 'Restart' : 'Start'}
       </button>
+
+      <div className="flex justify-between">
+        <div>bombs: {bombCounter}</div>
+      </div>
 
       <Grid
         onSquareClick={handleSquareClick}
