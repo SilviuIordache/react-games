@@ -24,13 +24,12 @@ export const Square = ({ onSquareClick, cell }: Props) => {
         {
           'bg-gray-700': cell.visible === false,
           'bg-gray-800': cell.visible === true,
+          'bg-red-500': cell.bomb && cell.visible,
         }
       )}
     >
       <div style={{ userSelect: 'none' }}>
-        <span className="text-red-600">
-          {cell.bomb && cell.visible ? '●' : ''}
-        </span>
+        <span>{cell.bomb && cell.visible ? '💣' : ''}</span>
         <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
         <span>{cell.visible && cell.nearbyBombs > 0 && cell.nearbyBombs}</span>
       </div>

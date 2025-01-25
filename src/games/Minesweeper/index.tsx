@@ -1,13 +1,9 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { Grid } from './Grid';
-import { Cell } from './types';
+import { Cell, GameState } from './types';
+import SmileyButton from './SmileyButton';
+import Confetti from './Confetti';
 
-export enum GameState {
-  START = 'START',
-  PLAYING = 'PLAYING',
-  GAMEOVER = 'GAMEOVER',
-  END = 'END',
-}
 export default function Minesweeper() {
   const gridSize = 7;
   const bombOccurence = 10; // value from 1 to 100
@@ -104,13 +100,14 @@ export default function Minesweeper() {
       // set the cell to visible
 
       if (event.button === 0) {
-        // perform reveal
+        // handle left click
         performReveal(x, y);
       } else if (event.button === 2) {
+        // handle right click
         if (cells[x][y].visible) return;
 
         // mark cell as potential bomb
-        const newCell = cells[x][y];
+        const newCell = { ...cells[x][y] };
 
         if (newCell.marked === false) {
           newCell.marked = true;
@@ -124,7 +121,6 @@ export default function Minesweeper() {
   );
 
   function updateGridWithNewCell(x: number, y: number, newCell: Cell) {
-    // update the grid
     const newGrid = cells.map((row) => [...row]);
     newGrid[x][y] = newCell;
     setCells(newGrid);
@@ -135,6 +131,13 @@ export default function Minesweeper() {
     setGameState(GameState.PLAYING);
   };
 
+  function revealBoard() {
+    for (let x = 0; x < gridSize; x++) {
+      const row: Cell[] = [];
+      for (let y = 0; y < gridSize; y++) {}
+    }
+  }
+
   function performReveal(sourceX, sourceY) {
     const newCell = cells[sourceX][sourceY];
 
@@ -142,6 +145,10 @@ export default function Minesweeper() {
     if (newCell.visible) return;
 
     newCell.visible = true;
+
+    if (newCell.bomb) {
+      setGameState(GameState.GAMEOVER);
+    }
 
     updateGridWithNewCell(sourceX, sourceY, newCell);
 
@@ -171,6 +178,7 @@ export default function Minesweeper() {
     });
   }
 
+  // game state checker
   useEffect(() => {
     const revealedCells = cells.flat().filter((cell) => cell.visible === true);
 
@@ -185,14 +193,8 @@ export default function Minesweeper() {
 
   return (
     <div>
-      <div>GameState: {gameState}</div>
-
-      <button
-        className="mb-4 bg-blue-600 hover:bg-blue-400 active:bg-blue-700 rounded-md p-2"
-        onClick={handleStartGame}
-      >
-        {gameState === GameState.START ? 'Restart' : 'Start'}
-      </button>
+      {gameState === GameState.END && <Confetti duration={5000}/>}
+      <SmileyButton gameState={gameState} handleStartGame={handleStartGame} />
 
       <div className="flex justify-between">
         <div>bombs: {bombCounter}</div>
