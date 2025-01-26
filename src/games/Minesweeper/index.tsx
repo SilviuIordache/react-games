@@ -6,32 +6,30 @@ import Confetti from '../../components/Confetti';
 
 export default function Minesweeper() {
   const gridSize = 7;
-  const bombOccurence = 10; // value from 1 to 100
+  const bombsCount = 3;
 
-  const [bombCounter, setBombCounter] = useState(0);
 
-  const [flagCounter, setFlagCounter] = useState(0);
+  const [flagCounter, setFlagCounter] = useState(bombsCount);
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
 
-  const getBombChance = () => {
-    return Math.random() * 100 < bombOccurence;
-  };
-
   const [cells, setCells] = useState(() => generateGrid());
 
-  function generateCells(
-    gridSize: number,
-    getBombChance: () => boolean
-  ): Cell[][] {
+  function generateCells(gridSize: number, bombCount: number): Cell[][] {
     const newGrid: Cell[][] = [];
-    let bombs = 0;
+    const bombCoordinates = new Set<string>();
+
+    // Generate unique bomb coordinates
+    while (bombCoordinates.size < bombCount) {
+      const x = Math.floor(Math.random() * gridSize);
+      const y = Math.floor(Math.random() * gridSize);
+      bombCoordinates.add(`${x},${y}`);
+    }
+
     for (let x = 0; x < gridSize; x++) {
       const row: Cell[] = [];
       for (let y = 0; y < gridSize; y++) {
-        const isBomb = getBombChance();
-
-        if (isBomb) bombs++;
+        const isBomb = bombCoordinates.has(`${x},${y}`);
 
         const cell = {
           coordinate: { x, y },
@@ -44,9 +42,6 @@ export default function Minesweeper() {
       }
       newGrid.push(row);
     }
-
-    setBombCounter(bombs);
-    setFlagCounter(bombs);
 
     return newGrid;
   }
@@ -88,7 +83,7 @@ export default function Minesweeper() {
   }
 
   function generateGrid() {
-    const newGrid = generateCells(gridSize, getBombChance);
+    const newGrid = generateCells(gridSize, bombsCount); 
     calculateBombCounters(newGrid, gridSize);
     return newGrid;
   }
@@ -189,7 +184,7 @@ export default function Minesweeper() {
 
     const revealedCellsCount = revealedCells.length;
 
-    const cellsToBeRevealed = gridSize * gridSize - bombCounter;
+    const cellsToBeRevealed = gridSize * gridSize - bombsCount;
 
     if (revealedCellsCount === cellsToBeRevealed) {
       setGameState(GameState.END);
@@ -202,7 +197,7 @@ export default function Minesweeper() {
       <SmileyButton gameState={gameState} handleStartGame={handleStartGame} />
 
       <div className="flex justify-between">
-        <div>bombs: {bombCounter}</div>
+        <div>bombs: {bombsCount}</div>
 
         <div>flags: {flagCounter}</div>
       </div>
