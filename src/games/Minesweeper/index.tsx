@@ -5,9 +5,8 @@ import SmileyButton from './SmileyButton';
 import Confetti from '../../components/Confetti';
 
 export default function Minesweeper() {
-  const gridSize = 7;
-  const bombsCount = 3;
-
+  const gridSize = 10;
+  const bombsCount = 8;
 
   const [flagCounter, setFlagCounter] = useState(bombsCount);
 
@@ -83,7 +82,7 @@ export default function Minesweeper() {
   }
 
   function generateGrid() {
-    const newGrid = generateCells(gridSize, bombsCount); 
+    const newGrid = generateCells(gridSize, bombsCount);
     calculateBombCounters(newGrid, gridSize);
     return newGrid;
   }
@@ -91,6 +90,7 @@ export default function Minesweeper() {
   const resetGrid = () => {
     const freshCells = generateGrid();
     setCells(freshCells);
+    setFlagCounter(bombsCount);
   };
 
   const handleSquareClick = useCallback(
@@ -197,8 +197,6 @@ export default function Minesweeper() {
       <SmileyButton gameState={gameState} handleStartGame={handleStartGame} />
 
       <div className="flex justify-between">
-        <div>bombs: {bombsCount}</div>
-
         <div>flags: {flagCounter}</div>
       </div>
 

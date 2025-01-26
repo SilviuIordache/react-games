@@ -22,10 +22,10 @@ const SmileyButton = ({ gameState, handleStartGame }: SmileyButtonProps) => {
   };
   return (
     <>
-      <div>GameState: {gameState}</div>
+      {/* <div>GameState: {gameState}</div> */}
 
       <button
-        className="mb-4 bg-blue-600 hover:bg-blue-400 active:bg-blue-700 rounded-md p-2"
+        className="mb-4 bg-gray-400 hover:bg-gray-200 active:bg-gray-700 rounded-md p-2 px-3"
         onClick={handleStartGame}
       >
         {emoji()}
