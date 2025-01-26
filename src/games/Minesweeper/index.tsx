@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { Grid } from './Grid';
 import { Cell, GameState } from './types';
 import SmileyButton from './SmileyButton';
-import Confetti from './Confetti';
+import Confetti from '../../components/Confetti';
 
 export default function Minesweeper() {
   const gridSize = 7;
