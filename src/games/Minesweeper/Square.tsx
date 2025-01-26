@@ -22,6 +22,29 @@ export const Square = ({
     onSquareClick(event, cell.coordinate.x, cell.coordinate.y);
   };
 
+  function getCellBombCountColor(cell: Cell) {
+    switch (cell.nearbyBombs) {
+      case 1:
+        return 'text-blue-300';
+      case 2:
+        return 'text-green-300';
+      case 3:
+        return 'text-yellow-300';
+      case 4:
+        return 'text-red-300';
+      case 5:
+        return 'text-purple-300';
+      case 6:
+        return 'text-orange-300';
+      case 7:
+        return 'text-pink-300';
+      case 8:
+        return 'text-gray-300';
+      default:
+        return 'text-gray-300';
+    }
+  }
+
   return (
     <div
       onClick={(event) =>
@@ -43,7 +66,11 @@ export const Square = ({
       <div style={{ userSelect: 'none' }}>
         <span>{cell.bomb && cell.visible ? '💣' : ''}</span>
         <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
-        <span>{cell.visible && cell.nearbyBombs > 0 && cell.nearbyBombs}</span>
+        <span
+          className={classNames('font-extrabold', getCellBombCountColor(cell))}
+        >
+          {cell.visible && cell.nearbyBombs > 0 && cell.nearbyBombs}
+        </span>
       </div>
     </div>
   );

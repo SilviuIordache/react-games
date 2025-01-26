@@ -10,7 +10,7 @@ export default function Minesweeper() {
     useMouseDown();
 
   const gridSize = 10;
-  const bombsCount = 8;
+  const bombsCount = 12;
 
   const [flagCounter, setFlagCounter] = useState(bombsCount);
 
