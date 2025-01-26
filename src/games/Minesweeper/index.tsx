@@ -10,6 +10,8 @@ export default function Minesweeper() {
 
   const [bombCounter, setBombCounter] = useState(0);
 
+  const [flagCounter, setFlagCounter] = useState(0);
+
   const [gameState, setGameState] = useState<GameState>(GameState.START);
 
   const getBombChance = () => {
@@ -44,6 +46,7 @@ export default function Minesweeper() {
     }
 
     setBombCounter(bombs);
+    setFlagCounter(bombs);
 
     return newGrid;
   }
@@ -111,8 +114,10 @@ export default function Minesweeper() {
 
         if (newCell.marked === false) {
           newCell.marked = true;
+          setFlagCounter((val) => val - 1);
         } else {
           newCell.marked = false;
+          setFlagCounter((val) => val + 1);
         }
         updateGridWithNewCell(x, y, newCell);
       }
@@ -193,11 +198,13 @@ export default function Minesweeper() {
 
   return (
     <div>
-      {gameState === GameState.END && <Confetti duration={5000}/>}
+      {gameState === GameState.END && <Confetti duration={5000} />}
       <SmileyButton gameState={gameState} handleStartGame={handleStartGame} />
 
       <div className="flex justify-between">
         <div>bombs: {bombCounter}</div>
+
+        <div>flags: {flagCounter}</div>
       </div>
 
       <Grid
