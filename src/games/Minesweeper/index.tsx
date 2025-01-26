@@ -3,8 +3,12 @@ import { Grid } from './Grid';
 import { Cell, GameState } from './types';
 import SmileyButton from './SmileyButton';
 import Confetti from '../../components/Confetti';
+import useMouseDown from './useMouseDown';
 
 export default function Minesweeper() {
+  const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
+    useMouseDown();
+
   const gridSize = 10;
   const bombsCount = 8;
 
@@ -194,13 +198,20 @@ export default function Minesweeper() {
   return (
     <div>
       {gameState === GameState.END && <Confetti duration={5000} />}
-      <SmileyButton gameState={gameState} handleStartGame={handleStartGame} />
+      <SmileyButton
+        isMouseDown={isMouseDown}
+        gameState={gameState}
+        handleStartGame={handleStartGame}
+      />
 
       <div className="flex justify-between">
         <div>flags: {flagCounter}</div>
       </div>
 
       <Grid
+        handleMouseDown={handleMouseDown}
+        handleMouseUp={handleMouseUp}
+        handleMouseLeave={handleMouseLeave}
         onSquareClick={handleSquareClick}
         cells={cells}
         gridSize={gridSize}

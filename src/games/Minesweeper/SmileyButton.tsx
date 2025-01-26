@@ -4,9 +4,18 @@ import { GameState } from './types';
 interface SmileyButtonProps {
   gameState: GameState;
   handleStartGame: () => void;
+  isMouseDown: boolean;
 }
-const SmileyButton = ({ gameState, handleStartGame }: SmileyButtonProps) => {
+const SmileyButton = ({
+  gameState,
+  handleStartGame,
+  isMouseDown,
+}: SmileyButtonProps) => {
   const emoji = () => {
+    if (isMouseDown) {
+      return '😯';
+    }
+
     switch (gameState) {
       case GameState.START:
         return '🙂';
@@ -25,7 +34,7 @@ const SmileyButton = ({ gameState, handleStartGame }: SmileyButtonProps) => {
       {/* <div>GameState: {gameState}</div> */}
 
       <button
-        className="mb-4 bg-gray-400 hover:bg-gray-200 active:bg-gray-700 rounded-md p-2 px-3"
+        className="text-2xl mb-4 bg-gray-700 border border-gray-500  hover:bg-gray-400 active:bg-gray-900 rounded-md p-2 px-3"
         onClick={handleStartGame}
       >
         {emoji()}

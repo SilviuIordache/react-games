@@ -4,10 +4,19 @@ import { Cell } from './types';
 
 interface Props {
   onSquareClick: (event, x: number, y: number) => void;
+  onMouseDown: () => void;
+  onMouseUp: () => void;
+  onMouseLeave: () => void;
   cell: Cell;
 }
 
-export const Square = ({ onSquareClick, cell }: Props) => {
+export const Square = ({
+  onSquareClick,
+  onMouseDown,
+  onMouseUp,
+  onMouseLeave,
+  cell,
+}: Props) => {
   const handleContextMenu = (event) => {
     event.preventDefault();
     onSquareClick(event, cell.coordinate.x, cell.coordinate.y);
@@ -19,6 +28,9 @@ export const Square = ({ onSquareClick, cell }: Props) => {
         onSquareClick(event, cell.coordinate.x, cell.coordinate.y)
       }
       onContextMenu={handleContextMenu}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}
       className={classNames(
         'bg-gray-700 w-8 h-8 border border-gray-500 hover:bg-gray-400 border-t-slate-400',
         {

@@ -6,9 +6,19 @@ interface Props {
   cells: Cell[][];
   gridSize: number;
   onSquareClick: (event: () => void, i: number, j: number) => void;
+  handleMouseDown: () => void;
+  handleMouseUp: () => void;
+  handleMouseLeave: () => void;
 }
 
-export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
+export const Grid = ({
+  cells,
+  gridSize,
+  onSquareClick,
+  handleMouseDown,
+  handleMouseUp,
+  handleMouseLeave,
+}: Props) => {
   const newGrid: JSX.Element[] = [];
 
   for (let i = 0; i < gridSize; i++) {
@@ -20,6 +30,9 @@ export const Grid = ({ cells, gridSize, onSquareClick }: Props) => {
           key={`${i}-${j}-${cells[i][j]}`}
           cell={cells[i][j]}
           onSquareClick={onSquareClick}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
         />
       );
     }
