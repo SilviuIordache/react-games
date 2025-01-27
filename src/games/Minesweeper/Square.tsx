@@ -25,23 +25,23 @@ export const Square = ({
   function getCellBombCountColor(cell: Cell) {
     switch (cell.nearbyBombs) {
       case 1:
-        return 'text-blue-300';
+        return 'text-blue-400';
       case 2:
-        return 'text-green-300';
+        return 'text-green-400';
       case 3:
-        return 'text-yellow-300';
+        return 'text-yellow-400';
       case 4:
-        return 'text-red-300';
+        return 'text-red-400';
       case 5:
-        return 'text-purple-300';
+        return 'text-purple-400';
       case 6:
-        return 'text-orange-300';
+        return 'text-orange-400';
       case 7:
-        return 'text-pink-300';
+        return 'text-pink-400';
       case 8:
-        return 'text-gray-300';
+        return 'text-gray-400';
       default:
-        return 'text-gray-300';
+        return 'text-gray-400';
     }
   }
 
@@ -55,10 +55,12 @@ export const Square = ({
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
       className={classNames(
-        'bg-gray-700 w-8 h-8 border border-gray-500 hover:bg-gray-400 border-t-slate-400',
+        'w-8 h-8  border-gray-900 hover:bg-pink-300',
+
         {
-          'bg-gray-700': cell.visible === false,
-          'bg-gray-800': cell.visible === true,
+          'bg-gray-700 border-4 border-t-gray-500 border-l-gray-500 border-b-gray-800 border-r-gray-800':
+            cell.visible === false,
+          'bg-gray-800 border-t border-l': cell.visible === true,
           'bg-red-500': cell.bomb && cell.visible,
         }
       )}
