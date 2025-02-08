@@ -21,7 +21,7 @@ export const EndDialog = ({
   };
 
   return (
-    <Dialog isOpen={isOpen} title="Game Over" hideCloseButton>
+    <Dialog isOpen={isOpen} title="Game Over">
       <p>
         You typed <span className="text-green-500">{wordsScored} words</span>{' '}
         and scored

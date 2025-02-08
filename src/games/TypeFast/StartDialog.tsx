@@ -11,7 +11,7 @@ export const StartDialog = ({ isOpen, onStartGame }: Props) => {
   };
 
   return (
-    <Dialog isOpen={isOpen} title="Type Fast Game" hideCloseButton>
+    <Dialog isOpen={isOpen} title="Type Fast Game">
       <ul className="mb-4 list-disc list-inside">
         <li>
           Type the words as fast as possible.

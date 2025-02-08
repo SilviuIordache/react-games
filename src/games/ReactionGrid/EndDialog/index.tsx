@@ -23,7 +23,7 @@ export const EndDialog = ({
   const slowestReaction = Math.max(...reactionArr);
 
   return (
-    <Dialog isOpen={isOpen} title="Results" hideCloseButton>
+    <Dialog isOpen={isOpen} title="Results">
       <p>Average: {convertMsToSeconds(averageReactionTime)}s</p>
 
       <p>Fastest: {convertMsToSeconds(fastestReaction)}s</p>

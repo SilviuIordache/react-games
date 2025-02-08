@@ -5,7 +5,8 @@ interface Props {
   title: string;
   onClose?: () => void;
   children: React.ReactNode;
-  hideCloseButton?: boolean;
+  showCloseButton?: boolean;
+  showCloseTopButton?: boolean;
 }
 
 const Dialog: React.FC<Props> = ({
@@ -13,7 +14,8 @@ const Dialog: React.FC<Props> = ({
   title,
   onClose,
   children,
-  hideCloseButton,
+  showCloseButton,
+  showCloseTopButton,
 }: Props) => {
   // Internal state to manage visibility if onClose is not provided
   const [isVisible, setIsVisible] = useState(isOpen);
@@ -25,10 +27,11 @@ const Dialog: React.FC<Props> = ({
 
   // Default close handler if onClose is not provided
   const handleClose = () => {
+    console.log('handleClose called');
     if (onClose) {
-      onClose(); // Call the onClose prop if provided
+      onClose();
     } else {
-      setIsVisible(false); // Default behavior to close dialog
+      setIsVisible(false);
     }
   };
 
@@ -39,10 +42,13 @@ const Dialog: React.FC<Props> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       {/* Dialog Box */}
       <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm w-full text-start">
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
+        <div className="flex justify-between items-start">
+          <h2 className="text-xl font-semibold mb-4">{title}</h2>
+          {showCloseTopButton && <button onClick={handleClose}>x</button>}
+        </div>
         {children}
         <div className="flex justify-end">
-          {!hideCloseButton && (
+          {showCloseButton && (
             <button
               onClick={handleClose} // Use handleClose for closing
               className="px-4 py-2 text-white bg-red-500 rounded"

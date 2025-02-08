@@ -1,17 +1,24 @@
 import React from 'react';
-import Dialog from '../../components/Dialog';
+import Dialog from '../../../components/Dialog';
 
 interface Props {
-  onStartGame: () => void;
   isOpen: boolean;
+  onClose: () => void;
+  onModeSelect: () => void;
 }
-export const StartDialog = ({ isOpen, onStartGame }: Props) => {
-  const handleStartGame = () => {
-    onStartGame();
+
+const OptionsDialog = ({ isOpen, onClose, onModeSelect }: Props) => {
+  const handleModeSelect = () => {
+    onModeSelect();
   };
 
   return (
-    <Dialog isOpen={isOpen} title="Reaction Grid">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Reaction Grid"
+      showCloseTopButton
+    >
       <p className="mb-4">
         Click on the <span className="text-blue-500">blue square</span> as fast
         as you can. Clicking on the wrong square will result in a penalty.
@@ -20,7 +27,7 @@ export const StartDialog = ({ isOpen, onStartGame }: Props) => {
       <div className="flex justify-end">
         <button
           className="bg-blue-800 text-white p-2 rounded-md"
-          onClick={handleStartGame}
+          onClick={handleModeSelect}
         >
           Start Game
         </button>
@@ -28,3 +35,5 @@ export const StartDialog = ({ isOpen, onStartGame }: Props) => {
     </Dialog>
   );
 };
+
+export default OptionsDialog;

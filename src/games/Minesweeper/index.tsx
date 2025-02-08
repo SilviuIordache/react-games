@@ -4,6 +4,7 @@ import { Cell, GameState } from './types';
 import SmileyButton from './SmileyButton';
 import Confetti from '../../components/Confetti';
 import useMouseDown from './useMouseDown';
+import GameOptions from './GameOptions';
 
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
@@ -212,9 +213,7 @@ export default function Minesweeper() {
           handleStartGame={handleStartGame}
         />
 
-        <button className="bg-gray-700 border border-gray-500  hover:bg-gray-400 active:bg-gray-900 rounded-md px-3">
-          ⚙️
-        </button>
+        <GameOptions />
       </div>
 
       <Grid
