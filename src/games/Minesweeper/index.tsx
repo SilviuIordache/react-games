@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Grid } from './Grid';
 import { Cell, GameState } from './types';
 import SmileyButton from './SmileyButton';
@@ -136,10 +136,13 @@ export default function Minesweeper() {
   };
 
   function revealBoard() {
+    const newCells = [...cells];
     for (let x = 0; x < gridSize; x++) {
-      const row: Cell[] = [];
-      for (let y = 0; y < gridSize; y++) {}
+      for (let y = 0; y < gridSize; y++) {
+        newCells[x][y].visible = true;
+      }
     }
+    setCells(newCells);
   }
 
   function performReveal(sourceX, sourceY) {
@@ -192,20 +195,26 @@ export default function Minesweeper() {
 
     if (revealedCellsCount === cellsToBeRevealed) {
       setGameState(GameState.END);
+      // revealBoard();
     }
   }, [cells]);
 
   return (
     <div>
       {gameState === GameState.END && <Confetti duration={5000} />}
-      <SmileyButton
-        isMouseDown={isMouseDown}
-        gameState={gameState}
-        handleStartGame={handleStartGame}
-      />
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-4">
         <div>flags: {flagCounter}</div>
+
+        <SmileyButton
+          isMouseDown={isMouseDown}
+          gameState={gameState}
+          handleStartGame={handleStartGame}
+        />
+
+        <button className="bg-gray-700 border border-gray-500  hover:bg-gray-400 active:bg-gray-900 rounded-md px-3">
+          ⚙️
+        </button>
       </div>
 
       <Grid
