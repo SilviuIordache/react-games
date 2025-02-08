@@ -27,7 +27,6 @@ const Dialog: React.FC<Props> = ({
 
   // Default close handler if onClose is not provided
   const handleClose = () => {
-    console.log('handleClose called');
     if (onClose) {
       onClose();
     } else {

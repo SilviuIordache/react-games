@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import OptionsDialog from './OptionsDialog';
 
-const GameOptions = () => {
+interface Props {
+  onGameModeSelect: (mode: string) => void;
+}
+const GameOptions = ({ onGameModeSelect }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
-    console.log('openModal called');
     setIsOpen(true);
-  };
-
-  const onModeSelect = () => {
-    console.log('mode selected');
   };
 
   return (
     <div>
       <button
-        className="bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md px-3"
+        className="text-2xl p-2 px-3 bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md"
         onClick={openModal}
       >
         ⚙️
@@ -25,7 +23,7 @@ const GameOptions = () => {
       <OptionsDialog
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onModeSelect={onModeSelect}
+        onGameModeSelect={onGameModeSelect}
       />
     </div>
   );

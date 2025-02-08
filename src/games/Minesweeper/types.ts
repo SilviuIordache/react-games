@@ -12,3 +12,9 @@ export enum GameState {
   GAMEOVER = 'GAMEOVER',
   END = 'END',
 }
+
+export type DIFFICULTY_MODE = {
+  name: 'Easy' | 'Medium' | 'Hard';
+  gridSize: number;
+  bombs: number;
+};

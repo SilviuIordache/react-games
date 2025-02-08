@@ -5,19 +5,20 @@ import SmileyButton from './SmileyButton';
 import Confetti from '../../components/Confetti';
 import useMouseDown from './useMouseDown';
 import GameOptions from './GameOptions';
+import DIFFICULTY_MODES from './globals';
 
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
     useMouseDown();
 
-  const gridSize = 8;
-  const bombsCount = 5;
+  const [gridSize, setGridSize] = useState(DIFFICULTY_MODES[0].gridSize);
+  const [bombsCount, setBombsCount] = useState(DIFFICULTY_MODES[0].bombs);
 
   const [flagCounter, setFlagCounter] = useState(bombsCount);
 
   const [gameState, setGameState] = useState<GameState>(GameState.START);
 
-  const [cells, setCells] = useState(() => generateGrid());
+  const [cells, setCells] = useState(() => generateGrid(gridSize, bombsCount));
 
   function generateCells(gridSize: number, bombCount: number): Cell[][] {
     const newGrid: Cell[][] = [];
@@ -86,14 +87,14 @@ export default function Minesweeper() {
     }
   }
 
-  function generateGrid() {
-    const newGrid = generateCells(gridSize, bombsCount);
-    calculateBombCounters(newGrid, gridSize);
+  function generateGrid(newGridSize, newBombsCount) {
+    const newGrid = generateCells(newGridSize, newBombsCount);
+    calculateBombCounters(newGrid, newGridSize);
     return newGrid;
   }
 
-  const resetGrid = () => {
-    const freshCells = generateGrid();
+  const resetGrid = (newGridSize, newBombsCount) => {
+    const freshCells = generateGrid(newGridSize, newBombsCount);
     setCells(freshCells);
     setFlagCounter(bombsCount);
   };
@@ -132,19 +133,9 @@ export default function Minesweeper() {
   }
 
   const handleStartGame = () => {
-    resetGrid();
+    resetGrid(gridSize, bombsCount);
     setGameState(GameState.PLAYING);
   };
-
-  function revealBoard() {
-    const newCells = [...cells];
-    for (let x = 0; x < gridSize; x++) {
-      for (let y = 0; y < gridSize; y++) {
-        newCells[x][y].visible = true;
-      }
-    }
-    setCells(newCells);
-  }
 
   function performReveal(sourceX, sourceY) {
     const newCell = cells[sourceX][sourceY];
@@ -200,6 +191,16 @@ export default function Minesweeper() {
     }
   }, [cells]);
 
+  const handleGameModeSelect = (modeName) => {
+    const modeParams = DIFFICULTY_MODES.find((mode) => mode.name === modeName);
+
+    if (modeParams) {
+      setGridSize(modeParams.gridSize);
+      setBombsCount(modeParams.bombs);
+      resetGrid(modeParams.gridSize, modeParams.bombs);
+    }
+  };
+
   return (
     <div>
       {gameState === GameState.END && <Confetti duration={5000} />}
@@ -213,7 +214,7 @@ export default function Minesweeper() {
           handleStartGame={handleStartGame}
         />
 
-        <GameOptions />
+        <GameOptions onGameModeSelect={handleGameModeSelect} />
       </div>
 
       <Grid

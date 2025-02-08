@@ -1,36 +1,31 @@
 import React from 'react';
 import Dialog from '../../../components/Dialog';
+import DIFFICULTY_MODES from '../globals';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onModeSelect: () => void;
+  onGameModeSelect: (mode: string) => void;
 }
 
-const OptionsDialog = ({ isOpen, onClose, onModeSelect }: Props) => {
-  const handleModeSelect = () => {
-    onModeSelect();
-  };
+const OptionsDialog = ({ isOpen, onClose, onGameModeSelect }: Props) => {
 
   return (
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
-      title="Reaction Grid"
+      title="Choose a difficulty"
       showCloseTopButton
     >
-      <p className="mb-4">
-        Click on the <span className="text-blue-500">blue square</span> as fast
-        as you can. Clicking on the wrong square will result in a penalty.
-      </p>
+      <div className="flex justify-between">
+        {DIFFICULTY_MODES.map((mode) => (
+          <div key={mode.name}>
+            <div>{mode.name}</div>
+            <div>{`${mode.gridSize}x${mode.gridSize}`}</div>
 
-      <div className="flex justify-end">
-        <button
-          className="bg-blue-800 text-white p-2 rounded-md"
-          onClick={handleModeSelect}
-        >
-          Start Game
-        </button>
+            <button onClick={() => onGameModeSelect(mode.name)}>Select</button>
+          </div>
+        ))}
       </div>
     </Dialog>
   );
