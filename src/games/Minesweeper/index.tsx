@@ -177,58 +177,67 @@ export default function Minesweeper() {
   };
 
   function performReveal(sourceX, sourceY) {
-    const newCell = cells[sourceX][sourceY];
+    setCells((prevCells) => {
+      return gameState === GameState.GAMEOVER
+        ? prevCells
+        : prevCells.map((row) => [...row]);
+    });
 
-    // Prevent infinite recursion by checking visibility
-    if (newCell.visible) return;
+    setCells((prevCells) => {
+      const newGrid = prevCells.map((row) => [...row]);
+      const newCell = { ...newGrid[sourceX][sourceY] };
 
-    newCell.visible = true;
+      if (newCell.visible) return prevCells;
 
-    if (newCell.bomb) {
-      handleLose();
-    }
+      newCell.visible = true;
 
-    updateGridWithNewCell(sourceX, sourceY, newCell);
-
-    if (newCell.nearbyBombs > 0) return;
-
-    // coordinates of neighbouring cells
-    const directions = [
-      { x: -1, y: -1 },
-      { x: -1, y: 0 },
-      { x: -1, y: 1 },
-      { x: 0, y: -1 },
-      { x: 0, y: 1 },
-      { x: 1, y: -1 },
-      { x: 1, y: 0 },
-      { x: 1, y: 1 },
-    ];
-
-    directions.forEach(({ x: dx, y: dy }) => {
-      const newX = sourceX + dx;
-      const newY = sourceY + dy;
-
-      // check if the new cell is within the grid
-      if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-        if (!cells[newX][newY].bomb && !cells[newX][newY].visible) {
-          performReveal(newX, newY);
-        }
+      if (newCell.bomb) {
+        handleGameOver();
+        return prevCells;
       }
+
+      newGrid[sourceX][sourceY] = newCell;
+
+      if (newCell.nearbyBombs > 0) return newGrid;
+
+      const directions = [
+        { x: -1, y: -1 },
+        { x: -1, y: 0 },
+        { x: -1, y: 1 },
+        { x: 0, y: -1 },
+        { x: 0, y: 1 },
+        { x: 1, y: -1 },
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
+      ];
+
+      directions.forEach(({ x: dx, y: dy }) => {
+        const newX = sourceX + dx;
+        const newY = sourceY + dy;
+
+        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+          if (!newGrid[newX][newY].bomb && !newGrid[newX][newY].visible) {
+            performReveal(newX, newY);
+          }
+        }
+      });
+
+      return newGrid;
     });
   }
 
   function revealAllBombs() {
-    const newGrid = cells.map((row) => [...row]);
+    setCells((prevCells) => {
+      const newGrid = prevCells.map((row) => [...row]);
 
-    for (let x = 0; x < gridSize; x++) {
-      for (let y = 0; y < gridSize; y++) {
-        if (newGrid[x][y].bomb) {
-          newGrid[x][y].visible = true;
-        }
-      }
-    }
+      newGrid.forEach((row) =>
+        row.forEach((cell) => {
+          if (cell.bomb) cell.visible = true;
+        })
+      );
 
-    setCells(newGrid);
+      return newGrid;
+    });
   }
 
   // game state checker
@@ -244,8 +253,8 @@ export default function Minesweeper() {
     }
   }, [cells]);
 
-  const handleLose = () => {
-    setGameState(GameState.GAMEOVER);
+  const handleGameOver = () => {
+    setGameState(() => GameState.GAMEOVER);
     revealAllBombs();
     pauseTimer();
   };
@@ -268,7 +277,7 @@ export default function Minesweeper() {
 
   return (
     <div>
-      {/* <p>{gameState}</p> */}
+      <p>{gameState}</p>
       {gameState === GameState.WIN && <Confetti duration={5000} />}
 
       <div className="h-8">
