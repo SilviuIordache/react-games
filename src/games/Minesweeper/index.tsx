@@ -144,12 +144,15 @@ export default function Minesweeper() {
     setCells(newGrid);
   }
 
-  const restartGame = () => {
-    resetGrid(gridSize, bombsCount);
-    setGameState(GameState.PLAYING);
+  function initializeGame(gridSize: number, bombsCount: number) {
     firstCellClicked.current = false;
+    resetGrid(gridSize, bombsCount);
     resetTimer();
-    console.log('end of restartGame');
+    setGameState(GameState.PLAYING);
+  }
+
+  const restartGame = () => {
+    initializeGame(gridSize, bombsCount);
   };
 
   function performReveal(sourceX, sourceY) {
@@ -235,11 +238,10 @@ export default function Minesweeper() {
 
     if (!modeParams) return;
 
-    setGameState(GameState.PLAYING);
     setGridSize(modeParams.gridSize);
     setBombsCount(modeParams.bombs);
-    resetGrid(modeParams.gridSize, modeParams.bombs);
-    resetTimer();
+
+    initializeGame(modeParams.gridSize, modeParams.bombs);
   };
 
   return (
