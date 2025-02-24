@@ -12,7 +12,7 @@ const SmileyButton = ({
   isMouseDown,
 }: SmileyButtonProps) => {
   const emoji = () => {
-    if (isMouseDown) {
+    if (isMouseDown && gameState !== GameState.GAMEOVER) {
       return '😯';
     }
 
@@ -28,16 +28,12 @@ const SmileyButton = ({
     }
   };
   return (
-    <>
-      {/* <div>GameState: {gameState}</div> */}
-
-      <button
-        className="text-2xl p-2 px-3 bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md"
-        onClick={handleStartGame}
-      >
-        {emoji()}
-      </button>
-    </>
+    <button
+      className="text-2xl p-2 px-3 bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md"
+      onClick={handleStartGame}
+    >
+      {emoji()}
+    </button>
   );
 };
 

@@ -108,7 +108,7 @@ export default function Minesweeper() {
 
   const handleSquareClick = useCallback(
     (event, x: number, y: number) => {
-      // set the cell to visible
+      if (gameState === GameState.GAMEOVER) return;
 
       if (event.button === 0) {
         // handle left click
@@ -222,7 +222,7 @@ export default function Minesweeper() {
     <div>
       {gameState === GameState.WIN && <Confetti duration={5000} />}
 
-      <div className='h-8'>
+      <div className="h-8">
         <GameFeedback gameState={gameState} />
       </div>
 

@@ -6,7 +6,7 @@ interface Props {
 }
 
 const GameFeedback = ({ gameState }: Props) => {
-  if (gameState === GameState.PLAYING) return null;
+  // if (gameState === GameState.PLAYING) return null;
 
   const textColor =
     gameState === GameState.WIN ? 'text-green-500' : 'text-red-500';
