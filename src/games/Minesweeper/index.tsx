@@ -207,7 +207,7 @@ export default function Minesweeper() {
       {gameState === GameState.END && <Confetti duration={5000} />}
 
       <div className="flex justify-between mb-4">
-        <div>flags: {flagCounter}</div>
+        <div>🚩 {flagCounter}</div>
 
         <SmileyButton
           isMouseDown={isMouseDown}
