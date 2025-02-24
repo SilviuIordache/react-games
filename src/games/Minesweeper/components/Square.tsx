@@ -12,16 +12,10 @@ interface Props {
 
 export const Square = memo(
   ({ onSquareClick, onMouseDown, onMouseUp, onMouseLeave, cell }: Props) => {
-    useEffect(() => {
-      console.log('onSquareClick changed');
-    }, [onSquareClick]);
-
     const handleContextMenu = (event) => {
       event.preventDefault();
       onSquareClick(event, cell.coordinate.x, cell.coordinate.y);
     };
-
-    console.log('Square rendered');
 
     function getCellBombCountColor(cell: Cell) {
       switch (cell.nearbyBombs) {
