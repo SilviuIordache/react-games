@@ -11,6 +11,11 @@ const GameOptions = ({ onGameModeSelect }: Props) => {
     setIsOpen(true);
   };
 
+  const handleGameModeSelect = (mode) => {
+    setIsOpen(false);
+    onGameModeSelect(mode);
+  };
+
   return (
     <div>
       <button
@@ -23,7 +28,7 @@ const GameOptions = ({ onGameModeSelect }: Props) => {
       <OptionsDialog
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onGameModeSelect={onGameModeSelect}
+        onGameModeSelect={handleGameModeSelect}
       />
     </div>
   );
