@@ -13,18 +13,12 @@ import GameFeedback from './components/GameFeedback';
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
     useMouseDown();
-
   const [timer, startTimer, pauseTimer, resetTimer] = useTimer();
-
   const [gridSize, setGridSize] = useState(DIFFICULTY_MODES[0].gridSize);
   const [bombsCount, setBombsCount] = useState(DIFFICULTY_MODES[0].bombs);
-
   const [flagCounter, setFlagCounter] = useState(bombsCount);
-
   const [gameState, setGameState] = useState<GameState>(GameState.PLAYING);
-
   const [cells, setCells] = useState(() => generateGrid(gridSize, bombsCount));
-
   const firstCellClicked = useRef(false);
 
   function generateCells(gridSize: number, bombCount: number): Cell[][] {
