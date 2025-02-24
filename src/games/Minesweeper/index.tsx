@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Grid } from './components/Grid';
 import { Cell, GameState } from './types';
 import SmileyButton from './components/SmileyButton';
@@ -18,7 +18,6 @@ export default function Minesweeper() {
   const [bombsCount, setBombsCount] = useState(DIFFICULTY_MODES[0].bombs);
   const [flagCounter, setFlagCounter] = useState(bombsCount);
   const [gameState, setGameState] = useState<GameState>(GameState.PLAYING);
-  const [cells, setCells] = useState(() => generateGrid(gridSize, bombsCount));
   const firstCellClicked = useRef(false);
 
   function generateCells(gridSize: number, bombCount: number): Cell[][] {
@@ -87,6 +86,13 @@ export default function Minesweeper() {
       }
     }
   }
+
+  const initialGrid = useMemo(
+    () => generateGrid(gridSize, bombsCount),
+    [gridSize, bombsCount]
+  );
+
+  const [cells, setCells] = useState(initialGrid);
 
   function generateGrid(newGridSize, newBombsCount) {
     const newGrid = generateCells(newGridSize, newBombsCount);
