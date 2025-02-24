@@ -144,10 +144,12 @@ export default function Minesweeper() {
     setCells(newGrid);
   }
 
-  const handleStartGame = () => {
+  const restartGame = () => {
     resetGrid(gridSize, bombsCount);
     setGameState(GameState.PLAYING);
+    firstCellClicked.current = false;
     resetTimer();
+    console.log('end of restartGame');
   };
 
   function performReveal(sourceX, sourceY) {
@@ -200,11 +202,14 @@ export default function Minesweeper() {
     const cellsToBeRevealed = gridSize * gridSize - bombsCount;
 
     if (revealedCellsCount === cellsToBeRevealed) {
-      pauseTimer();
-      setGameState(GameState.WIN);
-      // revealBoard();
+      handleWin();
     }
   }, [cells]);
+
+  const handleWin = () => {
+    pauseTimer();
+    setGameState(GameState.WIN);
+  };
 
   const handleGameModeSelect = (modeName) => {
     const modeParams = DIFFICULTY_MODES.find((mode) => mode.name === modeName);
@@ -236,7 +241,7 @@ export default function Minesweeper() {
         <SmileyButton
           isMouseDown={isMouseDown}
           gameState={gameState}
-          handleStartGame={handleStartGame}
+          handleRestart={restartGame}
         />
 
         <GameOptions onGameModeSelect={handleGameModeSelect} />
