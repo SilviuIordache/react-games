@@ -6,11 +6,12 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
       {gamesList.map((game) => (
         <Card key={game.name} onClick={() => navigate(game.path)}>
-          <h1 className="text-xl font-bold">{game.name}</h1>
+          <h1 className="text-xl font-bold mb-6">{game.name}</h1>
           {game.status === 'wip' && <p className="text-gray-500">WIP</p>}
+          <img src={game.image} alt={game.name} />
         </Card>
       ))}
     </div>
