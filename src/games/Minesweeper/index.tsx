@@ -120,9 +120,6 @@ export default function Minesweeper() {
       if (newCell.marked) {
         newCell.marked = false;
         setFlagCounter((prev) => prev + 1);
-      } else {
-        newCell.marked = true;
-        setFlagCounter((prev) => prev - 1);
       }
 
       if (!firstCellClicked.current) {
@@ -171,11 +168,11 @@ export default function Minesweeper() {
   };
 
   function performReveal(sourceX, sourceY) {
-    setCells((prevCells) => {
-      return gameState === GameState.GAMEOVER
-        ? prevCells
-        : prevCells.map((row) => [...row]);
-    });
+    // setCells((prevCells) => {
+    //   return gameState === GameState.GAMEOVER
+    //     ? prevCells
+    //     : prevCells.map((row) => [...row]);
+    // });
 
     setCells((prevCells) => {
       const newGrid = prevCells.map((row) => [...row]);
