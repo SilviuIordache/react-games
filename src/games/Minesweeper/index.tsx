@@ -96,7 +96,7 @@ export default function Minesweeper() {
   const resetGrid = (newGridSize, newBombsCount) => {
     const freshCells = generateGrid(newGridSize, newBombsCount);
     setCells(freshCells);
-    setFlagCounter(bombsCount);
+    setFlagCounter(newBombsCount);
   };
 
   const handleSquareClick = useCallback(
