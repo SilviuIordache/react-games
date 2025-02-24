@@ -1,6 +1,6 @@
 import React from 'react';
 import Dialog from '../../../../components/Dialog';
-import DIFFICULTY_MODES from '../../globals';
+import DIFFICULTY_MODES from '../../modes';
 
 interface Props {
   isOpen: boolean;
@@ -20,7 +20,7 @@ const OptionsDialog = ({ isOpen, onClose, onGameModeSelect }: Props) => {
         {DIFFICULTY_MODES.map((mode) => (
           <div key={mode.name}>
             <div className="mb-4">
-              <p className='text-lg font-bold'>{mode.name}</p>
+              <p className="text-lg font-bold">{mode.name}</p>
               <p>Grid: {`${mode.gridSize}x${mode.gridSize}`}</p>
               <p>Bombs: {mode.bombs}</p>
             </div>

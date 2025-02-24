@@ -1,11 +1,11 @@
 import { DIFFICULTY_MODE } from './types';
 
 const DIFFICULTY_MODES: DIFFICULTY_MODE[] = [
-  // {
-  //   name: 'Debug',
-  //   gridSize: 5,
-  //   bombs: 3,
-  // },
+  {
+    name: 'Debug',
+    gridSize: 5,
+    bombs: 2,
+  },
   {
     name: 'Easy',
     gridSize: 9,

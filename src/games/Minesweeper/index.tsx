@@ -5,7 +5,7 @@ import SmileyButton from './components/SmileyButton';
 import Confetti from '../../components/Confetti';
 import useMouseDown from './hooks/useMouseDown';
 import GameOptions from './components/GameOptions';
-import DIFFICULTY_MODES from './globals';
+import DIFFICULTY_MODES from './modes';
 import GameTimer from './components/GameTimer';
 import useTimer from '../../custom-hooks/useTimer';
 import GameFeedback from './components/GameFeedback';
@@ -106,37 +106,41 @@ export default function Minesweeper() {
     setFlagCounter(newBombsCount);
   };
 
-  const handleSquareClick = useCallback(
-    (event, x: number, y: number) => {
-      if (gameState === GameState.GAMEOVER) return;
+  const handleSquareClick = (event, x: number, y: number) => {
+    console.log(gameState);
+    if (gameState === GameState.GAMEOVER) return;
 
-      if (event.button === 0) {
-        // handle left click
+    if (event.button === 0) {
+      handleLeftClick(x, y);
+    } else if (event.button === 2) {
+      handleRightClick(x, y);
+    }
+  };
 
-        if (!firstCellClicked.current) {
-          firstCellClicked.current = true;
-          startTimer();
-        }
-        performReveal(x, y);
-      } else if (event.button === 2) {
-        // handle right click
-        if (cells[x][y].visible) return;
+  const handleLeftClick = (x: number, y: number) => {
+    if (!firstCellClicked.current) {
+      firstCellClicked.current = true;
+      startTimer();
+    }
+    performReveal(x, y);
+  };
 
-        // mark cell as potential bomb
-        const newCell = { ...cells[x][y] };
+  const handleRightClick = (x: number, y: number) => {
+    // handle right click
+    if (cells[x][y].visible) return;
 
-        if (newCell.marked === false) {
-          newCell.marked = true;
-          setFlagCounter((val) => val - 1);
-        } else {
-          newCell.marked = false;
-          setFlagCounter((val) => val + 1);
-        }
-        updateGridWithNewCell(x, y, newCell);
-      }
-    },
-    [cells]
-  );
+    // mark cell as potential bomb
+    const newCell = { ...cells[x][y] };
+
+    if (newCell.marked === false) {
+      newCell.marked = true;
+      setFlagCounter((val) => val - 1);
+    } else {
+      newCell.marked = false;
+      setFlagCounter((val) => val + 1);
+    }
+    updateGridWithNewCell(x, y, newCell);
+  };
 
   function updateGridWithNewCell(x: number, y: number, newCell: Cell) {
     const newGrid = cells.map((row) => [...row]);
@@ -223,9 +227,9 @@ export default function Minesweeper() {
   }, [cells]);
 
   const handleLose = () => {
+    setGameState(GameState.GAMEOVER);
     revealAllBombs();
     pauseTimer();
-    setGameState(GameState.GAMEOVER);
   };
 
   const handleWin = () => {
