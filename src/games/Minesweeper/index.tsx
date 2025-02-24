@@ -161,8 +161,7 @@ export default function Minesweeper() {
     newCell.visible = true;
 
     if (newCell.bomb) {
-      pauseTimer();
-      setGameState(GameState.GAMEOVER);
+      handleLose();
     }
 
     updateGridWithNewCell(sourceX, sourceY, newCell);
@@ -193,6 +192,20 @@ export default function Minesweeper() {
     });
   }
 
+  function revealAllBombs() {
+    const newGrid = cells.map((row) => [...row]);
+
+    for (let x = 0; x < gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+        if (newGrid[x][y].bomb) {
+          newGrid[x][y].visible = true;
+        }
+      }
+    }
+
+    setCells(newGrid);
+  }
+
   // game state checker
   useEffect(() => {
     const revealedCells = cells.flat().filter((cell) => cell.visible === true);
@@ -205,6 +218,12 @@ export default function Minesweeper() {
       handleWin();
     }
   }, [cells]);
+
+  const handleLose = () => {
+    revealAllBombs();
+    pauseTimer();
+    setGameState(GameState.GAMEOVER);
+  };
 
   const handleWin = () => {
     pauseTimer();
