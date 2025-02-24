@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { Grid } from './components/Grid';
 import { Cell, GameState } from './types';
 import SmileyButton from './components/SmileyButton';
@@ -106,15 +112,18 @@ export default function Minesweeper() {
     setFlagCounter(newBombsCount);
   };
 
-  const handleSquareClick = (event, x: number, y: number) => {
-    if (gameState !== GameState.PLAYING) return;
+  const handleSquareClick = useCallback(
+    (event, x: number, y: number) => {
+      if (gameState !== GameState.PLAYING) return;
 
-    if (event.button === 0) {
-      handleLeftClick(x, y);
-    } else if (event.button === 2) {
-      handleRightClick(x, y);
-    }
-  };
+      if (event.button === 0) {
+        handleLeftClick(x, y);
+      } else if (event.button === 2) {
+        handleRightClick(x, y);
+      }
+    },
+    [gameState]
+  );
 
   const handleLeftClick = (x: number, y: number) => {
     setCells((prevCells) => {
