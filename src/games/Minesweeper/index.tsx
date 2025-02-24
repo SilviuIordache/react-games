@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid } from './components/Grid';
 import { Cell, GameState } from './types';
 import SmileyButton from './components/SmileyButton';
