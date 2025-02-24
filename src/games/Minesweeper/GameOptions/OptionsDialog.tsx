@@ -9,7 +9,6 @@ interface Props {
 }
 
 const OptionsDialog = ({ isOpen, onClose, onGameModeSelect }: Props) => {
-
   return (
     <Dialog
       isOpen={isOpen}
@@ -17,13 +16,21 @@ const OptionsDialog = ({ isOpen, onClose, onGameModeSelect }: Props) => {
       title="Choose a difficulty"
       showCloseTopButton
     >
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-4">
         {DIFFICULTY_MODES.map((mode) => (
           <div key={mode.name}>
-            <div>{mode.name}</div>
-            <div>{`${mode.gridSize}x${mode.gridSize}`}</div>
+            <div className="mb-4">
+              <p className='text-lg font-bold'>{mode.name}</p>
+              <p>Grid: {`${mode.gridSize}x${mode.gridSize}`}</p>
+              <p>Bombs: {mode.bombs}</p>
+            </div>
 
-            <button onClick={() => onGameModeSelect(mode.name)}>Select</button>
+            <button
+              className="text-md p-2 px-3 bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md"
+              onClick={() => onGameModeSelect(mode.name)}
+            >
+              Select
+            </button>
           </div>
         ))}
       </div>
