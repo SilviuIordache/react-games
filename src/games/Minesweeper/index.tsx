@@ -168,12 +168,6 @@ export default function Minesweeper() {
   };
 
   function performReveal(sourceX, sourceY) {
-    // setCells((prevCells) => {
-    //   return gameState === GameState.GAMEOVER
-    //     ? prevCells
-    //     : prevCells.map((row) => [...row]);
-    // });
-
     setCells((prevCells) => {
       const newGrid = prevCells.map((row) => [...row]);
       const newCell = { ...newGrid[sourceX][sourceY] };
@@ -181,6 +175,11 @@ export default function Minesweeper() {
       if (newCell.visible) return prevCells;
 
       newCell.visible = true;
+
+      if (newCell.marked) {
+        newCell.marked = false;
+        setFlagCounter((prev) => prev + 1);
+      }
 
       if (newCell.bomb) {
         handleGameOver();
