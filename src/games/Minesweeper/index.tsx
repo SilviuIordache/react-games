@@ -16,7 +16,7 @@ export default function Minesweeper() {
 
   const [flagCounter, setFlagCounter] = useState(bombsCount);
 
-  const [gameState, setGameState] = useState<GameState>(GameState.START);
+  const [gameState, setGameState] = useState<GameState>(GameState.PLAYING);
 
   const [cells, setCells] = useState(() => generateGrid(gridSize, bombsCount));
 
@@ -194,11 +194,12 @@ export default function Minesweeper() {
   const handleGameModeSelect = (modeName) => {
     const modeParams = DIFFICULTY_MODES.find((mode) => mode.name === modeName);
 
-    if (modeParams) {
-      setGridSize(modeParams.gridSize);
-      setBombsCount(modeParams.bombs);
-      resetGrid(modeParams.gridSize, modeParams.bombs);
-    }
+    if (!modeParams) return;
+
+    setGameState(GameState.PLAYING);
+    setGridSize(modeParams.gridSize);
+    setBombsCount(modeParams.bombs);
+    resetGrid(modeParams.gridSize, modeParams.bombs);
   };
 
   return (
