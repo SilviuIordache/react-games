@@ -111,17 +111,28 @@ export default function Minesweeper() {
   };
 
   const handleLeftClick = (x: number, y: number) => {
-    const newCell = { ...cells[x][y] };
-    if (newCell.marked) {
-      newCell.marked = false;
-      setFlagCounter((val) => val + 1);
-    }
+    setCells((prevCells) => {
+      const newGrid = prevCells.map((row) => [...row]);
 
-    if (!firstCellClicked.current) {
-      firstCellClicked.current = true;
-      startTimer();
-    }
-    performReveal(x, y);
+      // Create a new object to avoid direct mutation
+      const newCell = { ...newGrid[x][y] };
+
+      if (newCell.marked) {
+        newCell.marked = false;
+        setFlagCounter((prev) => prev + 1);
+      }
+
+      if (!firstCellClicked.current) {
+        firstCellClicked.current = true;
+        startTimer();
+      }
+
+      // Update the new grid with the modified cell
+      newGrid[x][y] = newCell;
+
+      performReveal(x, y);
+      return newGrid;
+    });
   };
 
   const handleRightClick = (x: number, y: number) => {
