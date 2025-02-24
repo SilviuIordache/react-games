@@ -12,7 +12,7 @@ const SmileyButton = ({
   isMouseDown,
 }: SmileyButtonProps) => {
   const emoji = () => {
-    if (isMouseDown && gameState !== GameState.GAMEOVER) {
+    if (isMouseDown && gameState === GameState.PLAYING) {
       return '😯';
     }
 

@@ -107,7 +107,7 @@ export default function Minesweeper() {
   };
 
   const handleSquareClick = (event, x: number, y: number) => {
-    if (gameState === GameState.GAMEOVER) return;
+    if (gameState !== GameState.PLAYING) return;
 
     if (event.button === 0) {
       handleLeftClick(x, y);
