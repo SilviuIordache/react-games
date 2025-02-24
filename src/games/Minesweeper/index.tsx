@@ -225,6 +225,7 @@ export default function Minesweeper() {
 
   return (
     <div>
+      {/* <p>{gameState}</p> */}
       {gameState === GameState.WIN && <Confetti duration={5000} />}
 
       <div className="h-8">
@@ -233,7 +234,7 @@ export default function Minesweeper() {
 
       <div className="flex justify-between mb-4">
         <div className="flex flex-col items-start">
-          <div>🚩 {flagCounter}</div>
+          <p>🚩 {flagCounter}</p>
 
           <GameTimer timer={timer} />
         </div>
