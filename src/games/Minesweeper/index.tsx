@@ -120,6 +120,9 @@ export default function Minesweeper() {
       if (newCell.marked) {
         newCell.marked = false;
         setFlagCounter((prev) => prev + 1);
+      } else {
+        newCell.marked = true;
+        setFlagCounter((prev) => prev - 1);
       }
 
       if (!firstCellClicked.current) {
@@ -136,20 +139,24 @@ export default function Minesweeper() {
   };
 
   const handleRightClick = (x: number, y: number) => {
-    // handle right click
-    if (cells[x][y].visible) return;
+    setCells((prevCells) => {
+      const newGrid = prevCells.map((row) => [...row]);
+      const newCell = { ...newGrid[x][y] };
 
-    // mark cell as potential bomb
-    const newCell = { ...cells[x][y] };
+      if (newCell.visible) return prevCells;
 
-    if (newCell.marked === false) {
-      newCell.marked = true;
-      setFlagCounter((val) => val - 1);
-    } else {
-      newCell.marked = false;
-      setFlagCounter((val) => val + 1);
-    }
-    updateGridWithNewCell(x, y, newCell);
+      if (newCell.marked) {
+        newCell.marked = false;
+        setFlagCounter((prev) => prev + 1);
+      } else {
+        newCell.marked = true;
+        setFlagCounter((prev) => prev - 1);
+      }
+
+      newGrid[x][y] = newCell;
+
+      return newGrid;
+    });
   };
 
   function updateGridWithNewCell(x: number, y: number, newCell: Cell) {
