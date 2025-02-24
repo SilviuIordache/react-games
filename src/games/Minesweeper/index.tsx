@@ -107,7 +107,6 @@ export default function Minesweeper() {
   };
 
   const handleSquareClick = (event, x: number, y: number) => {
-    console.log(gameState);
     if (gameState === GameState.GAMEOVER) return;
 
     if (event.button === 0) {
@@ -118,6 +117,12 @@ export default function Minesweeper() {
   };
 
   const handleLeftClick = (x: number, y: number) => {
+    const newCell = { ...cells[x][y] };
+    if (newCell.marked) {
+      newCell.marked = false;
+      setFlagCounter((val) => val + 1);
+    }
+
     if (!firstCellClicked.current) {
       firstCellClicked.current = true;
       startTimer();
