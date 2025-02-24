@@ -6,10 +6,14 @@ import Confetti from '../../components/Confetti';
 import useMouseDown from './useMouseDown';
 import GameOptions from './GameOptions';
 import DIFFICULTY_MODES from './globals';
+import GameTimer from './GameTimer';
+import useTimer from '../../custom-hooks/useTimer';
 
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
     useMouseDown();
+
+  const [timer, startTimer, pauseTimer, resetTimer] = useTimer();
 
   const [gridSize, setGridSize] = useState(DIFFICULTY_MODES[0].gridSize);
   const [bombsCount, setBombsCount] = useState(DIFFICULTY_MODES[0].bombs);
@@ -135,6 +139,8 @@ export default function Minesweeper() {
   const handleStartGame = () => {
     resetGrid(gridSize, bombsCount);
     setGameState(GameState.PLAYING);
+    resetTimer();
+    startTimer();
   };
 
   function performReveal(sourceX, sourceY) {
@@ -146,6 +152,7 @@ export default function Minesweeper() {
     newCell.visible = true;
 
     if (newCell.bomb) {
+      pauseTimer();
       setGameState(GameState.GAMEOVER);
     }
 
@@ -186,6 +193,7 @@ export default function Minesweeper() {
     const cellsToBeRevealed = gridSize * gridSize - bombsCount;
 
     if (revealedCellsCount === cellsToBeRevealed) {
+      pauseTimer();
       setGameState(GameState.END);
       // revealBoard();
     }
@@ -200,6 +208,8 @@ export default function Minesweeper() {
     setGridSize(modeParams.gridSize);
     setBombsCount(modeParams.bombs);
     resetGrid(modeParams.gridSize, modeParams.bombs);
+    resetTimer();
+    startTimer();
   };
 
   return (
@@ -207,7 +217,11 @@ export default function Minesweeper() {
       {gameState === GameState.END && <Confetti duration={5000} />}
 
       <div className="flex justify-between mb-4">
-        <div>🚩 {flagCounter}</div>
+        <div className="flex flex-col items-start">
+          <div>🚩 {flagCounter}</div>
+
+          <GameTimer timer={timer} />
+        </div>
 
         <SmileyButton
           isMouseDown={isMouseDown}
