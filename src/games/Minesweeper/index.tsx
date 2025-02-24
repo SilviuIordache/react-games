@@ -192,7 +192,7 @@ export default function Minesweeper() {
 
     if (newCell.nearbyBombs > 0) return;
 
-    // Only reveal neighbors if no nearby bombs
+    // coordinates of neighbouring cells
     const directions = [
       { x: -1, y: -1 },
       { x: -1, y: 0 },
@@ -208,6 +208,7 @@ export default function Minesweeper() {
       const newX = sourceX + dx;
       const newY = sourceY + dy;
 
+      // check if the new cell is within the grid
       if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
         if (!cells[newX][newY].bomb && !cells[newX][newY].visible) {
           performReveal(newX, newY);
