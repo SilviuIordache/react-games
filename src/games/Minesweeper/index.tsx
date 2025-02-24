@@ -159,12 +159,6 @@ export default function Minesweeper() {
     });
   };
 
-  function updateGridWithNewCell(x: number, y: number, newCell: Cell) {
-    const newGrid = cells.map((row) => [...row]);
-    newGrid[x][y] = newCell;
-    setCells(newGrid);
-  }
-
   function initializeGame(gridSize: number, bombsCount: number) {
     firstCellClicked.current = false;
     resetGrid(gridSize, bombsCount);
