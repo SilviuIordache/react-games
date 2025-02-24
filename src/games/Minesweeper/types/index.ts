@@ -7,14 +7,13 @@ export interface Cell {
 }
 
 export enum GameState {
-  START = 'START',
   PLAYING = 'PLAYING',
   GAMEOVER = 'GAMEOVER',
-  END = 'END',
+  WIN = 'WIN',
 }
 
 export type DIFFICULTY_MODE = {
-  name: 'Easy' | 'Medium' | 'Hard';
+  name: 'Debug' | 'Easy' | 'Medium' | 'Hard';
   gridSize: number;
   bombs: number;
 };

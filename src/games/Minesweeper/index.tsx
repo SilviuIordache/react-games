@@ -8,6 +8,7 @@ import GameOptions from './components/GameOptions';
 import DIFFICULTY_MODES from './globals';
 import GameTimer from './components/GameTimer';
 import useTimer from '../../custom-hooks/useTimer';
+import GameFeedback from './components/GameFeedback';
 
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
@@ -200,7 +201,7 @@ export default function Minesweeper() {
 
     if (revealedCellsCount === cellsToBeRevealed) {
       pauseTimer();
-      setGameState(GameState.END);
+      setGameState(GameState.WIN);
       // revealBoard();
     }
   }, [cells]);
@@ -219,9 +220,12 @@ export default function Minesweeper() {
 
   return (
     <div>
-      {gameState === GameState.END && <Confetti duration={5000} />}
+      {gameState === GameState.WIN && <Confetti duration={5000} />}
 
-      {/* <GameStateInfo gameState={gameState} /> */}
+      <div className='h-8'>
+        <GameFeedback gameState={gameState} />
+      </div>
+
       <div className="flex justify-between mb-4">
         <div className="flex flex-col items-start">
           <div>🚩 {flagCounter}</div>

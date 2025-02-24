@@ -19,7 +19,7 @@ const SmileyButton = ({
     switch (gameState) {
       case GameState.PLAYING:
         return '🙂';
-      case GameState.END:
+      case GameState.WIN:
         return '😎';
       case GameState.GAMEOVER:
         return '😵';
