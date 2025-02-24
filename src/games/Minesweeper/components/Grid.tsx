@@ -1,6 +1,6 @@
 import React from 'react';
 import { Square } from './Square';
-import { Cell } from './types';
+import { Cell } from '../types';
 
 interface Props {
   cells: Cell[][];

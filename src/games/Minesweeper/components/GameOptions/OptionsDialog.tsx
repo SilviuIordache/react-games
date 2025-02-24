@@ -1,6 +1,6 @@
 import React from 'react';
-import Dialog from '../../../components/Dialog';
-import DIFFICULTY_MODES from '../globals';
+import Dialog from '../../../../components/Dialog';
+import DIFFICULTY_MODES from '../../globals';
 
 interface Props {
   isOpen: boolean;

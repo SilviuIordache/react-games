@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
-import { Grid } from './Grid';
+import { Grid } from './components/Grid';
 import { Cell, GameState } from './types';
-import SmileyButton from './SmileyButton';
+import SmileyButton from './components/SmileyButton';
 import Confetti from '../../components/Confetti';
-import useMouseDown from './useMouseDown';
-import GameOptions from './GameOptions';
+import useMouseDown from './hooks/useMouseDown';
+import GameOptions from './components/GameOptions';
 import DIFFICULTY_MODES from './globals';
-import GameTimer from './GameTimer';
+import GameTimer from './components/GameTimer';
 import useTimer from '../../custom-hooks/useTimer';
 
 export default function Minesweeper() {
@@ -221,6 +221,7 @@ export default function Minesweeper() {
     <div>
       {gameState === GameState.END && <Confetti duration={5000} />}
 
+      {/* <GameStateInfo gameState={gameState} /> */}
       <div className="flex justify-between mb-4">
         <div className="flex flex-col items-start">
           <div>🚩 {flagCounter}</div>
