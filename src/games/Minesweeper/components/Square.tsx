@@ -60,7 +60,8 @@ export const Square = memo(
           }
         )}
       >
-        <div style={{ userSelect: 'none' }}>
+        <div>
+          {/* <span>{cell.bomb && '💣'}</span> */}
           <span>{cell.bomb && cell.visible ? '💣' : ''}</span>
           <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
           <span
