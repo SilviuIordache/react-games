@@ -11,40 +11,44 @@ interface Props {
   handleMouseLeave: () => void;
 }
 
-export const Grid = ({
-  cells,
-  gridSize,
-  onSquareClick,
-  handleMouseDown,
-  handleMouseUp,
-  handleMouseLeave,
-}: Props) => {
-  const newGrid: JSX.Element[] = [];
+export const Grid = React.memo(
+  ({
+    cells,
+    gridSize,
+    onSquareClick,
+    handleMouseDown,
+    handleMouseUp,
+    handleMouseLeave,
+  }: Props) => {
+    const newGrid: JSX.Element[] = [];
 
-  for (let i = 0; i < gridSize; i++) {
-    const row: JSX.Element[] = [];
+    console.log('Grid rendered');
 
-    for (let j = 0; j < gridSize; j++) {
-      row.push(
-        <Square
-          key={`${i}-${j}-${cells[i][j]}`}
-          cell={cells[i][j]}
-          onSquareClick={onSquareClick}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-        />
+    for (let i = 0; i < gridSize; i++) {
+      const row: JSX.Element[] = [];
+
+      for (let j = 0; j < gridSize; j++) {
+        row.push(
+          <Square
+            key={`${i}-${j}-${cells[i][j]}`}
+            cell={cells[i][j]}
+            onSquareClick={onSquareClick}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+          />
+        );
+      }
+
+      newGrid.push(
+        <div key={i} style={{ display: 'flex' }}>
+          {row}
+        </div>
       );
     }
 
-    newGrid.push(
-      <div key={i} style={{ display: 'flex' }}>
-        {row}
-      </div>
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>{newGrid}</div>
     );
   }
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>{newGrid}</div>
-  );
-};
+);
