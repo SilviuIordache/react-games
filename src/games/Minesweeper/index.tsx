@@ -225,7 +225,6 @@ export default function Minesweeper() {
           newY < gridSize &&
           newGrid[newX]?.[newY]
         ) {
-          // console.log({ newGrid });
           if (!newGrid[newX][newY]?.bomb && !newGrid[newX][newY]?.visible) {
             performReveal(newX, newY);
           }
