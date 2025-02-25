@@ -277,7 +277,6 @@ export default function Minesweeper() {
 
   return (
     <div>
-      <p>{gameState}</p>
       {gameState === GameState.WIN && <Confetti duration={5000} />}
 
       <div className="h-8">
