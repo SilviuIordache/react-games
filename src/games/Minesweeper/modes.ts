@@ -16,11 +16,11 @@ const DIFFICULTY_MODES: DIFFICULTY_MODE[] = [
     gridSize: 16,
     bombs: 30,
   },
-  {
-    name: 'Debug',
-    gridSize: 5,
-    bombs: 2,
-  },
+  // {
+  //   name: 'Debug',
+  //   gridSize: 5,
+  //   bombs: 2,
+  // },
 ];
 
 export default DIFFICULTY_MODES;
