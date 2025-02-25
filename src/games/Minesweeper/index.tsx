@@ -168,6 +168,9 @@ export default function Minesweeper() {
 
   function initializeGame(gridSize: number, bombsCount: number) {
     firstCellClicked.current = false;
+
+    setGridSize(gridSize);
+    setBombsCount(bombsCount);
     resetGrid(gridSize, bombsCount);
     resetTimer();
     setGameState(GameState.PLAYING);
@@ -215,7 +218,14 @@ export default function Minesweeper() {
         const newX = sourceX + dx;
         const newY = sourceY + dy;
 
-        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+        if (
+          newX >= 0 &&
+          newX < gridSize &&
+          newY >= 0 &&
+          newY < gridSize &&
+          newGrid[newX]?.[newY]
+        ) {
+          // console.log({ newGrid });
           if (!newGrid[newX][newY]?.bomb && !newGrid[newX][newY]?.visible) {
             performReveal(newX, newY);
           }
@@ -269,9 +279,6 @@ export default function Minesweeper() {
     const modeParams = DIFFICULTY_MODES.find((mode) => mode.name === modeName);
 
     if (!modeParams) return;
-
-    setGridSize(modeParams.gridSize);
-    setBombsCount(modeParams.bombs);
 
     initializeGame(modeParams.gridSize, modeParams.bombs);
   };

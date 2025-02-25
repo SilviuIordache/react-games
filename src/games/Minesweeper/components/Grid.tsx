@@ -21,9 +21,6 @@ export const Grid = React.memo(
     handleMouseLeave,
   }: Props) => {
     const newGrid: JSX.Element[] = [];
-
-    console.log('Grid rendered');
-
     for (let i = 0; i < gridSize; i++) {
       const row: JSX.Element[] = [];
 
