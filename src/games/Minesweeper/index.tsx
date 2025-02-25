@@ -242,9 +242,10 @@ export default function Minesweeper() {
 
   // game state checker
   useEffect(() => {
-    const revealedCells = cells.flat().filter((cell) => cell.visible === true);
-
-    const revealedCellsCount = revealedCells.length;
+    const revealedCellsCount = cells.reduce(
+      (acc, row) => acc + row.filter((cell) => cell.visible).length,
+      0
+    );
 
     const cellsToBeRevealed = gridSize * gridSize - bombsCount;
 
