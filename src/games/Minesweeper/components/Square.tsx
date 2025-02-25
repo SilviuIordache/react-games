@@ -50,7 +50,7 @@ export const Square = memo(
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseLeave}
         className={classNames(
-          'w-8 h-8  border-gray-900 hover:bg-pink-300',
+          'w-8 h-8  border-gray-900 hover:bg-pink-300 cursor-default',
 
           {
             'bg-gray-700 border-4 border-t-gray-500 border-l-gray-500 border-b-gray-800 border-r-gray-800':
