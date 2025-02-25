@@ -255,7 +255,7 @@ export default function Minesweeper() {
   }, [cells]);
 
   const handleGameOver = () => {
-    setGameState(() => GameState.GAMEOVER);
+    setGameState(GameState.GAMEOVER);
     revealAllBombs();
     pauseTimer();
   };
