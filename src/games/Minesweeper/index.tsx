@@ -15,6 +15,7 @@ import DIFFICULTY_MODES from './modes';
 import GameTimer from './components/GameTimer';
 import useTimer from '../../custom-hooks/useTimer';
 import GameFeedback from './components/GameFeedback';
+import { StartDialog } from './components/StartDialog';
 
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
@@ -25,6 +26,8 @@ export default function Minesweeper() {
   const [flagCounter, setFlagCounter] = useState(bombsCount);
   const [gameState, setGameState] = useState<GameState>(GameState.PLAYING);
   const [cells, setCells] = useState(() => generateGrid(gridSize, bombsCount));
+
+  const [showStartDialog, setShowStartDialog] = useState(true);
 
   const firstCellClicked = useRef(false);
 
@@ -284,6 +287,10 @@ export default function Minesweeper() {
 
   return (
     <div>
+      <StartDialog
+        onStartGame={() => setShowStartDialog(false)}
+        isOpen={showStartDialog}
+      />
       {gameState === GameState.WIN && <Confetti duration={5000} />}
 
       <div className="h-8">
