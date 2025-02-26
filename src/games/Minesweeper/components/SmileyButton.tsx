@@ -29,7 +29,7 @@ const SmileyButton = ({
   };
   return (
     <button
-      className="text-2xl p-2 px-3 bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md"
+      className="text-2xl p-2 px-4 bg-gray-700 border border-gray-500 hover:bg-gray-400 active:bg-gray-900 rounded-md"
       onClick={handleRestart}
     >
       {emoji()}

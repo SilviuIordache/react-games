@@ -298,7 +298,7 @@ export default function Minesweeper() {
 
       <div className="flex justify-between mb-4">
         <div
-          className="flex flex-col items-start"
+          className="flex flex-col items-start justify-between text-lg"
           style={{ fontFamily: 'monospace' }}
         >
           <p>🚩 {flagCounter}</p>
