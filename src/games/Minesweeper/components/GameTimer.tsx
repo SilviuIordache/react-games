@@ -4,11 +4,7 @@ interface Props {
   timer: number;
 }
 const GameTimer = ({ timer }: Props) => {
-  let displayedTimer;
-
-  if (timer <= 9) displayedTimer = `00${timer}`;
-  else if (timer <= 99) displayedTimer = `0${timer}`;
-  else displayedTimer = timer;
+  const displayedTimer = String(timer).padStart(3, '0');
 
   return <div>⏱️ {displayedTimer}</div>;
 };
