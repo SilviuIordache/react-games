@@ -1,21 +1,20 @@
 import React, {
-  useState,
+  useCallback,
   useEffect,
   useRef,
-  useMemo,
-  useCallback,
+  useState
 } from 'react';
-import { Grid } from './components/Grid';
-import { Cell, GameState } from './types';
-import SmileyButton from './components/SmileyButton';
 import Confetti from '../../components/Confetti';
-import useMouseDown from './hooks/useMouseDown';
-import GameOptions from './components/GameOptions';
-import DIFFICULTY_MODES from './modes';
-import GameTimer from './components/GameTimer';
 import useTimer from '../../custom-hooks/useTimer';
 import GameFeedback from './components/GameFeedback';
+import GameOptions from './components/GameOptions';
+import GameTimer from './components/GameTimer';
+import { Grid } from './components/Grid';
+import SmileyButton from './components/SmileyButton';
 import { StartDialog } from './components/StartDialog';
+import useMouseDown from './hooks/useMouseDown';
+import DIFFICULTY_MODES from './modes';
+import { Cell, GameState } from './types';
 
 export default function Minesweeper() {
   const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
