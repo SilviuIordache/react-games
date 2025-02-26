@@ -60,7 +60,7 @@ export const Square = memo(
           }
         )}
       >
-        <div>
+        <div className='pt-0.5'>
           {/* <span>{cell.bomb && '💣'}</span> */}
           <span>{cell.bomb && cell.visible ? '💣' : ''}</span>
           <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
