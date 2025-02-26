@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import classNames from 'classnames';
 import { Cell } from '../types';
 
@@ -12,32 +12,44 @@ interface Props {
 
 export const Square = memo(
   ({ onSquareClick, onMouseDown, onMouseUp, onMouseLeave, cell }: Props) => {
+    const [isMouseDown, setIsMouseDown] = useState(false);
+    const [isMouseOver, setIsMouseOver] = useState(false);
+
     const handleContextMenu = (event) => {
       event.preventDefault();
       onSquareClick(event, cell.coordinate.x, cell.coordinate.y);
     };
 
+    const handleMouseDown = () => {
+      setIsMouseDown(true);
+      onMouseDown();
+    };
+
+    const handleMouseUp = () => {
+      setIsMouseDown(false);
+      onMouseUp();
+    };
+
+    const handleMouseEnter = () => {
+      setIsMouseOver(true);
+    };
+
+    const handleMouseLeave = () => {
+      setIsMouseOver(false);
+    };
+
     function getCellBombCountColor(cell: Cell) {
-      switch (cell.nearbyBombs) {
-        case 1:
-          return 'text-blue-400';
-        case 2:
-          return 'text-green-400';
-        case 3:
-          return 'text-yellow-400';
-        case 4:
-          return 'text-red-400';
-        case 5:
-          return 'text-purple-400';
-        case 6:
-          return 'text-orange-400';
-        case 7:
-          return 'text-pink-400';
-        case 8:
-          return 'text-gray-400';
-        default:
-          return 'text-gray-400';
-      }
+      const colors = [
+        'text-blue-400', // 1
+        'text-green-400', // 2
+        'text-yellow-400', // 3
+        'text-red-400', // 4
+        'text-purple-400', // 5
+        'text-orange-400', // 6
+        'text-pink-400', // 7
+        'text-gray-400', // 8
+      ];
+      return colors[cell.nearbyBombs - 1] || 'text-gray-400';
     }
 
     return (
@@ -46,21 +58,20 @@ export const Square = memo(
           onSquareClick(event, cell.coordinate.x, cell.coordinate.y)
         }
         onContextMenu={handleContextMenu}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseLeave}
-        className={classNames(
-          'w-8 h-8  border-gray-900 hover:bg-pink-300 cursor-default',
-
-          {
-            'bg-gray-700 border-4 border-t-gray-500 border-l-gray-500 border-b-gray-800 border-r-gray-800':
-              cell.visible === false,
-            'bg-gray-800 border-t border-l': cell.visible === true,
-            'bg-red-500': cell.bomb && cell.visible,
-          }
-        )}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={classNames('w-8 h-8 border-gray-900 cursor-default', {
+          'hover:bg-pink-300': !isMouseDown,
+          'bg-gray-700 border-4 border-t-gray-500 border-l-gray-500 border-b-gray-800 border-r-gray-800':
+            cell.visible === false,
+          'bg-gray-800 border-t border-l': cell.visible === true,
+          'bg-red-500': cell.bomb && cell.visible,
+          'bg-gray-800': isMouseDown && isMouseOver,
+        })}
       >
-        <div className='pt-0.5'>
+        <div className="pt-0.5">
           {/* <span>{cell.bomb && '💣'}</span> */}
           <span>{cell.bomb && cell.visible ? '💣' : ''}</span>
           <span>{cell.marked && !cell.visible ? '🚩' : ''}</span>
