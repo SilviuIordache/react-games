@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Confetti from '../../components/Confetti';
 import useTimer from '../../custom-hooks/useTimer';
 import GameFeedback from './components/GameFeedback';
@@ -17,8 +12,7 @@ import DIFFICULTY_MODES from './modes';
 import { Cell, GameState } from './types';
 
 export default function Minesweeper() {
-  const { isMouseDown, handleMouseDown, handleMouseUp, handleMouseLeave } =
-    useMouseDown();
+  const { isMouseDown, handleMouseDown, handleMouseUp } = useMouseDown();
   const [timer, startTimer, pauseTimer, resetTimer] = useTimer();
   const [gridSize, setGridSize] = useState(DIFFICULTY_MODES[0].gridSize);
   const [bombsCount, setBombsCount] = useState(DIFFICULTY_MODES[0].bombs);
@@ -318,7 +312,6 @@ export default function Minesweeper() {
       <Grid
         handleMouseDown={handleMouseDown}
         handleMouseUp={handleMouseUp}
-        handleMouseLeave={handleMouseLeave}
         onSquareClick={handleSquareClick}
         cells={cells}
         gridSize={gridSize}

@@ -8,7 +8,6 @@ interface Props {
   onSquareClick: (event: () => void, i: number, j: number) => void;
   handleMouseDown: () => void;
   handleMouseUp: () => void;
-  handleMouseLeave: () => void;
 }
 
 export const Grid = React.memo(
@@ -18,7 +17,6 @@ export const Grid = React.memo(
     onSquareClick,
     handleMouseDown,
     handleMouseUp,
-    handleMouseLeave,
   }: Props) => {
     const newGrid: JSX.Element[] = [];
     for (let i = 0; i < gridSize; i++) {
@@ -32,7 +30,6 @@ export const Grid = React.memo(
             onSquareClick={onSquareClick}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
           />
         );
       }

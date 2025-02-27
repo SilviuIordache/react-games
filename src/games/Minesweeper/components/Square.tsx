@@ -6,12 +6,11 @@ interface Props {
   onSquareClick: (event, x: number, y: number) => void;
   onMouseDown: () => void;
   onMouseUp: () => void;
-  onMouseLeave: () => void;
   cell: Cell;
 }
 
 export const Square = memo(
-  ({ onSquareClick, onMouseDown, onMouseUp, onMouseLeave, cell }: Props) => {
+  ({ onSquareClick, onMouseDown, onMouseUp, cell }: Props) => {
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMouseOver, setIsMouseOver] = useState(false);
 
