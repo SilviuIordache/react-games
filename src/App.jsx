@@ -7,9 +7,6 @@ import Home from './Home';
 
 function App() {
   return (
-    // <TypeFast />
-    // <ReactionGrid />
-    // <FlippySquares/>
     <Router>
       <Routes>
         <Route key="/" path="/" element={<Home />} />
